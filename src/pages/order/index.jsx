@@ -26,6 +26,10 @@ class Index extends Component {
     // }
   }
 
+  doOrder = (params) =>{
+    Taro.navigateTo({ url: `/pages/order_${params}/index` })
+  }
+
   
 
   render () {
@@ -34,15 +38,15 @@ class Index extends Component {
       <View className='g-index'>
         <View className="m-head">立即预约</View>
         <View className="m-wrap">
-          <View className="m-main m-main-up">
+          <View className="m-main m-main-up" onClick={this.doOrder.bind(this,'g')}>
             <Text className="m-res">国标</Text>
             <Text className="m-res">治理</Text>
           </View>  
-          <View className="m-main m-main-l">
+          <View className="m-main m-main-l" onClick={this.doOrder.bind(this,'m')}>
             <Text className="m-res">母婴</Text>
             <Text className="m-res">治理</Text>
           </View>  
-          <View className="m-main m-main-r">
+          <View className="m-main m-main-r" onClick={this.doOrder.bind(this,'e')}>
             <Text className="m-res">环境</Text>
             <Text className="m-res">检测</Text>
           </View>  

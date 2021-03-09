@@ -4,7 +4,10 @@ export default {
     'pages/intro/index',
     'pages/case/index',
     'pages/shop/index',
-    'pages/user/index',
+    'pages/user/index',   
+    'pages/order_g/index',
+    'pages/order_m/index',
+    'pages/order_e/index',
   ],
   tabBar: {
     list: [{
