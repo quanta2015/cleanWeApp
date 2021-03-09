@@ -1,33 +1,55 @@
 .g-index {
+  margin: 0 8rpx;
   // display: flex;
   // flex-direction: column;
   // justify-content: center;
   // align-items: center;
   // height: 100vh;
+  .title{
+    margin: 20rpx;
+    font-size: 36rpx;
+  }
+  .area {
 
-  .area-tags{
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    .at-tag--small {
-      height: 60rpx;
-      font-size: 30rpx;
-      line-height: 54rpx;
+    .area-tags {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+
+      .at-tag--small {
+        height: 60rpx;
+        font-size: 30rpx;
+        line-height: 54rpx;
+      }
+    }
+
+    .use {
+      margin: 20rpx;
+      height: 80rpx;
+      box-shadow: 0 0 6rpx rgba(140, 180, 120, 0.8);
+      background: rgba(140, 180, 120, .2);
+      padding: 20rpx 40rpx;
+      border-radius: 16rpx;
+      display: flex;
+      align-items: center;
+    }
+
+    .area-price {
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 30rpx;
     }
   }
-  .use{
-    margin: 20rpx;
-    height:80rpx;
-    box-shadow: 0 2PX 5PX #eeeeee;
-    background-color: white;
-    padding:10PX 20PX;
-    border-radius: 16rpx;
+  
+  .insurance{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    .insurance-price{
+      margin-left: auto;
+      margin-right: 30rpx;
+      color: red;
+      font-size: 36rpx;
+    }
   }
 }
-
-
-
-
-
-
-
