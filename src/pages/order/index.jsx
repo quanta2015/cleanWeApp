@@ -47,7 +47,7 @@ class Index extends Component {
             <Text className="m-res">检测</Text>
           </View>  
         </View>
-        <View className="m-info"> 每平方服务价低至<em>20</em>元！</View>
+        <View className="m-info">每平方服务价低至<Text className="u-rmb">20</Text>元！</View>
         
       </View>
     )
