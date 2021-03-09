@@ -26,23 +26,10 @@ class Index extends Component {
     // }
   }
 
-  increment = () => {
-    const { counterStore } = this.props.store
-    counterStore.increment()
-  }
-
-  decrement = () => {
-    const { counterStore } = this.props.store
-    counterStore.decrement()
-  }
-
-  incrementAsync = () => {
-    const { counterStore } = this.props.store
-    counterStore.incrementAsync()
-  }
+  
 
   render () {
-    const { counterStore: { counter } } = this.props.store
+    // const { counterStore: { counter } } = this.props.store
     return (
       <View className='g-index'>
         <View className="m-head">立即预约</View>
