@@ -32,7 +32,7 @@ class Index extends Component {
     // const { counterStore: { counter } } = this.props.store
     return (
       <View className='g-index'>
-         母婴
+         环境 
       </View>
     )
   }
