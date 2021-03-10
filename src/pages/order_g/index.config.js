@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '国标治理'
+  navigationBarTitleText: '首页'
 }
