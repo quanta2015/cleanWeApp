@@ -5,7 +5,6 @@ import Taro from '@tarojs/taro'
 import api from '../../constant/apis'
 import req from '../../utils/request'
 import './index.less'
-import drug from '../../assets/icon_drug.png'
 
 @inject('store')
 @observer
