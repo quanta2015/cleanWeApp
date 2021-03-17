@@ -6,13 +6,13 @@ import api from '../../constant/apis'
 import req from '../../utils/request'
 import './index.less'
 
-
 @inject('store')
 @observer
 class Index extends Component {
 
   async componentDidMount () {
-    // try {
+
+    // try { 
     //   const res = await req.post('/getDataList',{aa:'b'})
     //   console.log(res.data)
     //   this.setState({
@@ -24,13 +24,14 @@ class Index extends Component {
     //     title: '载入远程数据错误'
     //   })
     // }
+
+    let { mainStore } = this.props.store
+    mainStore.pay("0.02")
   }
 
   doOrder = (params) =>{
     Taro.navigateTo({ url: `/pages/order_${params}/index` })
   }
-
-  
 
   render () {
     // const { counterStore: { counter } } = this.props.store

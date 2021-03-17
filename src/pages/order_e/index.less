@@ -2,6 +2,10 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+
+  .m-step3 {
+    flex-direction: row!important;
+  }
   
   .m-step2 {
     margin-top: 20rpx;
@@ -15,7 +19,32 @@
     .m-tl {
       font-size: 1.2rem;
       font-weight: 100;
-      margin-bottom: 10rpx;
+      margin-bottom: 10px;
+      flex: 1;
+      .m-red {
+        color: #ee0000;
+      }
+    }
+
+    .m-chk {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ccc;
+      width: 80px;
+      height: 80px;
+      border: 1px dashed #ccc;
+      margin-right: 10px;
+      &.sel {
+        border: 1px solid #ee6600;
+        background: #dd0000;
+        color: #fff;
+        border: 1px solid #aa0000;
+      }
+
+      .m-pt {
+        color: #ee0000;
+      }
     }
 
     .m-sel {
@@ -106,7 +135,7 @@
 
 
   .m-sep {
-    height: 10rpx;
+    height: 20rpx;
     border-top: 1rpx solid #ccc;
     border-bottom: 1rpx solid #ccc;
     background: #eee;
@@ -121,13 +150,18 @@
     margin: 20rpx 0;
     /*flex-direction: column;*/
 
+    .m-wrap {
+      display: flex;
+      width: 50%;
+    }
+
     .m-q + .m-q {
       margin-left: 10rpx;
     }
 
     .m-q {
       font-weight: 400;
-      font-size: 1rem;
+      font-size: 30px;
       border: 1Px solid #2EAE76;
       padding: 5Px;
       box-sizing: border-box;
@@ -135,6 +169,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex: 1;
 
       .m-icon {
         width: 50px;
@@ -160,6 +195,40 @@
         font-size: 1.5rem;
       }
     }
+  }
+
+  .m-total {
+    display: flex;
+    padding: 20px;
+    border-top: 1px dashed #ccc;
+    margin: 20px;
+
+    .m-head {
+      font-weight: 100;
+      font-size: 1.2rem;
+      flex: 1;
+    }
+    .m-tail {
+      color: #ee0000;
+      font-family: 'georgia';
+      font-size: 1.5rem;
+    }
+  }
+
+  .m-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #cc0000;
+    padding: 10rpx;
+    margin: 20rpx;
+    border-radius: 10rpx;
+    color: #fff;
+    background: #ee0000;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
   }
 
 }

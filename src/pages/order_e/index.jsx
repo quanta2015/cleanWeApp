@@ -15,10 +15,11 @@ class Index extends Component {
 
     this.state = {
       data: { area:{ price: 189, amount: [2,3,3.5,4,5]},
-              tech:{ hprice:200, lprice: 150, amount:[2.5,3,3.5,4,5]}
+              tech:{ hprice:200, lprice: 150, amount:[2.5,3,3.5,4,5], price:[350,400], info:['初级+高级','高级+高级']}
             },
       selArea:null,
       selTech:null,
+      selSafe:false,
     }
   }
 
@@ -45,8 +46,13 @@ class Index extends Component {
     this.setState({selTech: e})
   }
 
+  doSelSafe =()=>{
+    this.setState({selSafe:!this.state.selSafe})
+  }
+
   render () {
-    let {selArea, data, selTech}= this.state
+    let {selArea, data, selTech, selSafe}= this.state
+    let areaPrice = (selArea!==null)?data.area.amount[selArea]*2*data.area.price:0
 
     console.log(data.area.amount[selArea])
     // const { counterStore: { counter } } = this.props.store
@@ -78,7 +84,8 @@ class Index extends Component {
             </View> 
          </View>
 
-          <View className="m-step m-step2 ">
+         {(selArea!==null) &&
+          <View className="m-step m-step2">
             <Text className="m-tl">2. 请选择技术服务人员</Text>
             <View className="m-sel">
               <View className={(selTech==0)?"m-group sel":"m-group"} onClick={this.doSelTech.bind(this,0)}>
@@ -104,28 +111,91 @@ class Index extends Component {
                 </View>
               </View>
             </View> 
-         </View>
+          </View>}
+
+         {(selTech!==null) &&
+          <View className="m-step m-step3">
+            <Text className="m-tl">3. 是否需要保险 <Text className=" m-red">(3%)</Text></Text>
+
+            <View className={(selSafe)?"m-chk sel":"m-chk"} onClick={this.doSelSafe}>
+              是
+            </View> 
+          </View>}
 
          <View className="m-sep"></View>
 
          {(selArea!==null) && 
           <View className="m-ret">
+            <View className="m-wrap">
               <View className="m-q">
                 <Text>除醛 {data.area.amount[selArea]}L</Text>
               </View>
               <View className="m-q">
                 <Text>除味 {data.area.amount[selArea]}L</Text>
               </View>
+            </View>
+            <View className="m-calu">
+              <Text className="m-c1">
+                {data.area.amount[selArea]*2} × {data.area.price}
+              </Text>
+              <Text className="m-c2">
+                {areaPrice}
+              </Text>
+            </View>
+         </View>
+         }
+
+         {(selTech!==null) && 
+          <View className="m-ret">
+              <View className="m-wrap">
+                <View className="m-q">
+                  <Text>{data.tech.info[selTech]} {data.area.amount[selTech]}小时</Text>
+                </View>
+              </View>
               <View className="m-calu">
                 <Text className="m-c1">
-                  {data.area.amount[selArea]*2} × {data.area.price}
+                  {data.tech.amount[selTech]} × {data.tech.price[selTech]}
                 </Text>
                 <Text className="m-c2">
-                  {data.area.amount[selArea]*2*data.area.price}
+                  {data.tech.amount[selTech]*data.tech.price[selTech]}
                 </Text>
               </View>
          </View>
          }
+
+         {(selSafe) && 
+          <View className="m-ret">
+              <View className="m-wrap">
+                <View className="m-q">
+                  <Text>保险 3%</Text>
+                </View>
+              </View>
+              <View className="m-calu">
+                <Text className="m-c1">
+                {data.tech.amount[selTech]*data.tech.price[selTech] + data.area.amount[selArea]*2*data.area.price} × 3%
+                </Text>
+                <Text className="m-c2">
+                  {parseInt((data.tech.amount[selTech]*data.tech.price[selTech] + data.area.amount[selArea]*2*data.area.price)*0.03)}
+                </Text>
+              </View>
+         </View>}
+
+         {(selTech!==null) && 
+          <View className="m-total">
+              <View className="m-head">
+                总计
+              </View>
+              <View className="m-tail">
+                2190
+              </View>
+         </View>}
+
+
+
+        {(selTech!==null) &&
+         <View className="m-btn">
+            下一步
+         </View>}
 
       </View>
     )
