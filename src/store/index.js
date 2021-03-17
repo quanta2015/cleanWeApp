@@ -6,23 +6,21 @@ var URL_JSCODE2SESSION  = 'https://mooc.hznu.edu.cn/jscode2session'
 var URL_WXPAY           = "https://mooc.hznu.edu.cn/wxpay"; 
 
 class mainStore {
-
   @observable  openid = null;
 
   pay(money) {
     Taro.login({ success: res => {this.WeSession(res.code,money)} })
   }
 
-
   WeSession(code,money) {
     console.log(`code: ${code}`)
     Taro.request({
-      method: 'post',
-      url: URL_JSCODE2SESSION,
-      data: {code: code},
-      header:{ 'Content-Type': 'application/json'},
+      method: 'POST',
+      url:    URL_JSCODE2SESSION,
+      data:   {code: code},
+      header: { 'Content-Type': 'application/json'},
       success: res => {
-        console.log('openid: ' + res.data.openid)
+        console.log(`openid: ${res.data.openid}`)
         this.openid = res.data.openid
         this.WxApi(res.data.openid,money)
       }
@@ -32,9 +30,9 @@ class mainStore {
   WxApi(openid,money) {
     let data = {
       openid:     openid,
-      orderCode:  dayjs().format('YYYYMMDDhhmmssSSS'), //"10200909125346",
       money:      money,
       orderID:    "34318",
+      orderCode:  dayjs().format('YYYYMMDDhhmmssSSS'),
     }
     Taro.request({
       method: 'post',

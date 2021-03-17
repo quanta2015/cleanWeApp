@@ -26,7 +26,7 @@ class Index extends Component {
     // }
 
     let { mainStore } = this.props.store
-    mainStore.pay("0.02")
+    // mainStore.pay("0.02")
   }
 
   doOrder = (params) =>{
@@ -34,7 +34,6 @@ class Index extends Component {
   }
 
   render () {
-    // const { counterStore: { counter } } = this.props.store
     return (
       <View className='g-index'>
         <View className="m-head">立即预约</View>
