@@ -25,7 +25,7 @@ class Index extends Component {
     //   })
     // }
 
-    let { mainStore } = this.props.store
+    // let { mainStore } = this.props.store
     // mainStore.pay("0.02")
   }
 
@@ -38,17 +38,23 @@ class Index extends Component {
       <View className='g-index'>
         <View className="m-head">立即预约</View>
         <View className="m-wrap">
-          <View className="m-main m-main-up" onClick={this.doOrder.bind(this,'g')}>
+          <View className="m-main m-main-up">
+            <View className="m-main-c m-main-cl" onClick={this.doOrder.bind(this,'s')}>
+              <Text className="m-res">溯源</Text>
+              <Text className="m-res">检测</Text>
+            </View>
+            <View className="m-main-c m-main-cr" onClick={this.doOrder.bind(this,'c')}>
+              <Text className="m-res">CMA</Text>
+              <Text className="m-res">检测</Text>
+            </View>
+          </View>  
+          <View className="m-main m-main-l" onClick={this.doOrder.bind(this,'g')}>
             <Text className="m-res">国标</Text>
             <Text className="m-res">治理</Text>
           </View>  
-          <View className="m-main m-main-l" onClick={this.doOrder.bind(this,'m')}>
+          <View className="m-main m-main-r" onClick={this.doOrder.bind(this,'m')}>
             <Text className="m-res">母婴</Text>
             <Text className="m-res">治理</Text>
-          </View>  
-          <View className="m-main m-main-r" onClick={this.doOrder.bind(this,'e')}>
-            <Text className="m-res">环境</Text>
-            <Text className="m-res">检测</Text>
           </View>  
         </View>
         <View className="m-info">每平方服务价低至<Text className="u-rmb">20</Text>元！</View>

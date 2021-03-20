@@ -6,8 +6,35 @@ var URL_JSCODE2SESSION  = 'https://mooc.hznu.edu.cn/jscode2session'
 var URL_WXPAY           = "https://mooc.hznu.edu.cn/wxpay"; 
 
 class mainStore {
-  @observable  openid = null;
+  openid = null;
+  area = 0;
+  poi = 0;
+  selTech = null;
+  selSafe = null;
+  allPrice = 0;
+  db = {
+    LM:   0.07,
+    GP:   189,
+    BASE_AREA: 50,
+    BASE_PRICE: 5,
+    SP:   870,
+    SP_F: 90,
+    ST:   290,
+    ST_F: 30,
+    INS:  0.03,
+  }
 
+  setArea(area) { this.area = area }
+  getArea()     { return this.area }
+  setPoi(poi)  { this.poi = poi }
+  getPoi()     { return this.poi }
+  setSelTech(selTech) { this.selTech = selTech }
+  getSelTech()  { return this.selTech }
+  setSelSafe(selSafe) { this.selSafe = selSafe }
+  getSelSafe()  { return this.selSafe }
+  setAllPrice(allPrice) { this.allPrice = allPrice }
+  getAllPrice()  { return this.allPrice }
+  
   pay(money) {
     Taro.login({ success: res => {this.WeSession(res.code,money)} })
   }
@@ -51,6 +78,10 @@ class mainStore {
           paySign:   data.paySign,
           success(res){
             console.log(res,'微信支付成功！！！')
+            Taro.navigateTo({ url: `/pages/info_ret/index` })
+          },
+          fail (res) { 
+            console.log(res,'失败')
           }
         })
       }
@@ -58,7 +89,6 @@ class mainStore {
   }
 
   json2Form(json, str=[])  {
-    // let str = []
     for (let p in json) {
       str.push(`${encodeURIComponent(p)}=${encodeURIComponent(json[p])}`)
     }

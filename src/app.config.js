@@ -1,13 +1,19 @@
 export default {
   pages: [
-  'pages/order/index',
-  'pages/order_g/index',
-  'pages/order_e/index',
+  // 'pages/order_g_n1/index',
+    'pages/order/index',
+    'pages/order_g/index',
+    'pages/order_g_n2/index',
+    'pages/order_g_n1/index',
+    
+    
+    'pages/order_e/index',
+    'pages/order_m/index',
     'pages/intro/index',
     'pages/case/index',
     'pages/shop/index',
     'pages/user/index',   
-    'pages/order_m/index',
+    'pages/info_ret/index',
     
   ],
   tabBar: {
@@ -37,8 +43,8 @@ export default {
       pagePath: 'pages/user/index',
       text: '个人'
     }],
-    'color': '#000',
-    'selectedColor': '#3366cc',
+    'color': '#aaa',
+    'selectedColor': '#333',
     'backgroundColor': '#fff',
     'borderStyle': 'white'
   },
