@@ -12,17 +12,7 @@ class mainStore {
   selTech = null;
   selSafe = null;
   allPrice = 0;
-  db = {
-    LM:   0.07,
-    GP:   189,
-    BASE_AREA: 50,
-    BASE_PRICE: 5,
-    SP:   870,
-    SP_F: 90,
-    ST:   290,
-    ST_F: 30,
-    INS:  0.03,
-  }
+  db = null;
 
   setArea(area) { this.area = area }
   getArea()     { return this.area }
@@ -34,6 +24,7 @@ class mainStore {
   getSelSafe()  { return this.selSafe }
   setAllPrice(allPrice) { this.allPrice = allPrice }
   getAllPrice()  { return this.allPrice }
+  setDb(db) {this.db = db}
   
   pay(money) {
     Taro.login({ success: res => {this.WeSession(res.code,money)} })
@@ -77,11 +68,13 @@ class mainStore {
           signType:  'MD5',
           paySign:   data.paySign,
           success(res){
-            console.log(res,'微信支付成功！！！')
+            console.log(res)
+            Taro.showToast({ title:'支付成功', mask:true })
             Taro.navigateTo({ url: `/pages/info_ret/index` })
           },
           fail (res) { 
-            console.log(res,'失败')
+            console.log(res)
+            Taro.showToast({ title:'支付失败', mask:true })
           }
         })
       }

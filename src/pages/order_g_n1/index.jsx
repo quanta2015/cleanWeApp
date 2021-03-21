@@ -7,6 +7,7 @@ import './index.less'
 import icon_del from '../../assets/icon_del.png'
 import { $ } from '@tarojs/extend'
 import Taro from '@tarojs/taro'
+import { getCurrentInstance } from '@tarojs/taro'
 
 const eof = (data)=> (data!==null)&&(data!=='')
 
@@ -17,6 +18,7 @@ class Index extends Component {
     super(props)
 
     this.state = {
+      type: getCurrentInstance().router.params.type,
       name:null,
       phone:null,
       addr:null,
@@ -26,6 +28,10 @@ class Index extends Component {
   }
 
   async componentDidMount() {
+    switch(this.state.type) {
+      case 'g':Taro.setNavigationBarTitle({title:'国标治理'});break;
+      case 'm':Taro.setNavigationBarTitle({title:'母婴治理'});break;
+    }
     
   }
 
@@ -36,7 +42,7 @@ class Index extends Component {
   }
 
   doNext =()=>{
-    Taro.navigateTo({ url: `/pages/order_g_n2/index` })
+    Taro.navigateTo({ url: `/pages/order_g_n2/index?type=${this.state.type}` })
   }
 
   doInput=(params,e)=>{

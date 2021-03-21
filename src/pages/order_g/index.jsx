@@ -7,7 +7,7 @@ import Taro from '@tarojs/taro'
 import './index.less'
 import icon_del from '../../assets/icon_del.png'
 import { $ } from '@tarojs/extend'
-
+import { getCurrentInstance } from '@tarojs/taro'
 
 const caluPoi=(n,count=0)=>{
   if (n==0) return 1;
@@ -23,6 +23,7 @@ class Index extends Component {
     super(props)
 
     this.state = {
+      type: getCurrentInstance().router.params.type,
       area: 0,
       poi: 0,
       goodsPrice: 0,
@@ -39,20 +40,10 @@ class Index extends Component {
 
 
   async componentDidMount() {
-    // try {)
-    //   const res = await req.post('/getDataList',{aa:'b'})
-    //   console.log(res.data)
-    //   this.setState({
-    //     data: res.data,
-    //     loading: false
-    //   })
-    // } catch (error) {
-    //   Taro.showToast({
-    //     title: '载入远程数据错误'
-    //   })
-    // }
-    // console.log(this.props.store.mainStore.db)
-    
+    switch(this.state.type) {
+      case 'g':Taro.setNavigationBarTitle({title:'国标治理'});break;
+      case 'm':Taro.setNavigationBarTitle({title:'母婴治理'});break;
+    }
   }
 
   doShowArea=()=>{
@@ -64,9 +55,14 @@ class Index extends Component {
 
   caluPrint=(area, poi, selPoint,selTech)=>{
     let { selSafe } = this.state
-    let {db}=this.props.store.mainStore
-    let goodsPrice = (parseFloat(`${area}.${poi}`)*db.LM*db.GP).toFixed(2)
-    let techPrice = (selTech!==null)?((area-db.BASE_AREA)*db.BASE_PRICE+db.SP+selTech*db.SP_F).toFixed(2):0
+    let db=this.props.store.mainStore.db[this.state.type]
+
+    let ap = parseFloat(`${area}.${poi}`)
+    ap = (ap<50)?50:ap
+
+    // console.log('db'+this.props.store.mainStore.db)
+    let goodsPrice = (ap*db.LM*db.GP).toFixed(2)
+    let techPrice = (selTech!==null)?((ap-db.BASE_AR)*db.BASE_PR+db.SP+selTech*db.SP_F).toFixed(2):0
     let techTime  = (selTech!==null)?(techPrice/(db.ST+selTech*db.ST_F)).toFixed(2):0
     let insPrice  = (selSafe)?(parseInt(goodsPrice)+parseInt(techPrice))*db.INS.toFixed(2):0
     this.setState({
@@ -143,7 +139,7 @@ class Index extends Component {
     mainStore.setSelTech(this.state.selTech)
     mainStore.setSelSafe(this.state.selSafe)
     mainStore.setAllPrice(allPrice)
-    Taro.navigateTo({ url: `/pages/order_g_n1/index` })
+    Taro.navigateTo({ url: `/pages/order_g_n1/index?type=${this.state.type}` })
   }
 
   render() {

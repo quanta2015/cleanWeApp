@@ -3,7 +3,7 @@ import { View, Button, Text } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
 import Taro from '@tarojs/taro'
 import api from '../../constant/apis'
-import req from '../../utils/request'
+
 import './index.less'
 
 @inject('store')
@@ -11,6 +11,11 @@ import './index.less'
 class Index extends Component {
 
   async componentDidMount () {
+
+  //   Taro.showLoading({
+  //   title:'提示内容',
+  //   mask:true,  
+  // })
 
     // try { 
     //   const res = await req.post('/getDataList',{aa:'b'})
@@ -30,7 +35,13 @@ class Index extends Component {
   }
 
   doOrder = (params) =>{
-    Taro.navigateTo({ url: `/pages/order_${params}/index` })
+    switch(params) {
+      case 'g':
+        Taro.navigateTo({ url: `/pages/order_g/index?type=${params}` });break;
+      case 'm':
+        Taro.navigateTo({ url: `/pages/order_g/index?type=${params}` });break;
+    }
+    
   }
 
   render () {

@@ -1,3 +1,3 @@
-export const API_SERVER     = 'http://localhost'
+export const API_SERVER     = 'https://mooc.hznu.edu.cn'
 
 export const getLatestTopic = '/getLatestTopic'

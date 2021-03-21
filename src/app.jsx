@@ -5,7 +5,7 @@ import mainStore from './store'
 import 'taro-ui/dist/style/index.scss'
 import './app.less'
 import dayjs from 'dayjs'
-
+import req from './utils/request'
 
 // const json2Form=(json)=> {
 //   let str = [];
@@ -75,29 +75,13 @@ const store = {
 }
 
 class App extends Component {
-  componentDidMount () {
-    // WeLogin(WeSession)
-
-    // Taro.login({
-    //   success: res => {
-    //    console.log(res.code)
-    //    let url = 'https://mooc.hznu.edu.cn/code2session'
-    //    let data = {}
-    //    data.code = res.code
-    //    Taro.request({
-    //       method: 'POST',
-    //       url: url,
-    //       data: json2Form(data),
-    //       header: {
-    //         'Content-Type': 'application/x-www-form-urlencoded', 
-    //       },
-    //       success: res => {
-    //         console.log('openid: '+res.data.openid)
-    //         // this.wxapi(res.data.openid);
-    //       }
-    //     })
-    //   }
-    // })
+  async componentDidMount () {
+    Taro.showLoading({ title:'loading', mask:true })
+    const res = await req.post('/getAppDB')
+    console.log(res.data)
+    mainStore.setDb(res.data)
+    Taro.hideLoading()
+    
   }
 
 

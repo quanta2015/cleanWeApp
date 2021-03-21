@@ -6,7 +6,8 @@ import req from '../../utils/request'
 import './index.less'
 import icon_del from '../../assets/icon_del.png'
 import { $ } from '@tarojs/extend'
-
+import { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 
 
 
@@ -15,10 +16,17 @@ import { $ } from '@tarojs/extend'
 class Index extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      type: getCurrentInstance().router.params.type,
+    }
   }
 
   async componentDidMount() {
-
+    switch(this.state.type) {
+      case 'g':Taro.setNavigationBarTitle({title:'国标治理'});break;
+      case 'm':Taro.setNavigationBarTitle({title:'母婴治理'});break;
+    }
   }
 
   doPay=()=>{
