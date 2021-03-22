@@ -1,19 +1,17 @@
 export default {
   pages: [
-    'pages/intro/index',
     'pages/order/index',
+    'pages/case/index',
+    'pages/intro/index',
     'pages/order_g/index',
     'pages/order_g_n2/index',
     'pages/order_g_n1/index',
-    
-    
     'pages/order_e/index',
-    'pages/order_m/index',
-    // 'pages/intro/index',
-    'pages/case/index',
+    'pages/info_ret/index',
+    
+    // 'pages/case/index',
     'pages/shop/index',
     'pages/user/index',   
-    'pages/info_ret/index',
     
   ],
   tabBar: {

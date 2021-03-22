@@ -5,6 +5,43 @@ import dayjs from 'dayjs'
 var URL_JSCODE2SESSION  = 'https://mooc.hznu.edu.cn/jscode2session'
 var URL_WXPAY           = "https://mooc.hznu.edu.cn/wxpay"; 
 
+const DATA = { 
+                g: { LM:0.07,GP:189,BASE_AR:50,BASE_PR:5,SP:870, SP_F:90, ST:290,ST_F:30,INS:0.03 },
+                m: { LM:0.09,GP:189,BASE_AR:50,BASE_PR:6,SP:1120,SP_F:250,ST:290,ST_F:30,INS:0.03 },
+                s: { LM:99 },
+                c: { LM:299 },
+                case: [ { name:'20峰会西子宾馆', img:'case/01.jpg' },
+                        { name:'上城区社保局', img:'case/02.jpg' },
+                        { name:'上海万怡酒店', img:'case/03.jpg' },
+                        { name:'上虞政协办公楼', img:'case/04.jpg' },
+                        { name:'下城观成幼儿园', img:'case/05.jpg' },
+                        { name:'中意文化交流中心', img:'case/06.jpg' },
+                        { name:'云呼企业管理集团', img:'case/07.jpg' },
+                        { name:'仙化传媒公司', img:'case/08.jpg' },
+                        { name:'周易研究所', img:'case/09.jpg' },
+                        { name:'宁波银行湖州分行', img:'case/10.jpg' },
+                        { name:'工商银行嵊州支行', img:'case/11.jpg' },
+                        { name:'悦悦满月子会所', img:'case/12.jpg' },
+                        { name:'新浪琴湾别墅', img:'case/13.jpg' },
+                        { name:'春晖上源府别墅', img:'case/14.jpg' },
+                        { name:'杭州下城党群服务中心', img:'case/15.jpg' },
+                        { name:'杭州市工商业联合会', img:'case/16.jpg' },
+                        { name:'杭州行知小学学院校区', img:'case/17.jpg' },
+                        { name:'果然控股集团', img:'case/18.jpg' },
+                        { name:'桐乡农业创新中心', img:'case/19.jpg' },
+                        { name:'浙大网新银湖科技园', img:'case/20.jpg' },
+                        { name:'浙江省国资委', img:'case/21.jpg' },
+                        { name:'湖州市民中心', img:'case/22.jpg' },
+                        { name:'爱弥儿幼儿园', img:'case/23.jpg' },
+                        { name:'瑞莱克斯酒店', img:'case/24.jpg' },
+                        { name:'维也纳酒店', img:'case/25.jpg' },
+                        { name:'绿城房产', img:'case/26.jpg' },
+                        { name:'融创房产', img:'case/27.jpg' },
+                        { name:'长兴县行政服务中心', img:'case/28.jpg' },
+                        { name:'靖美华庭', img:'case/29.jpg' },
+                        { name:'龙湖地产', img:'case/30.jpg' }]
+             }
+
 class mainStore {
   openid = null;
   area = 0;
@@ -12,7 +49,8 @@ class mainStore {
   selTech = null;
   selSafe = null;
   allPrice = 0;
-  db = null;
+  // db = null;
+  db = DATA;
 
   setArea(area) { this.area = area }
   getArea()     { return this.area }

@@ -76,12 +76,11 @@ const store = {
 
 class App extends Component {
   async componentDidMount () {
-    Taro.showLoading({ title:'loading', mask:true })
-    const res = await req.post('/getAppDB')
-    console.log(res.data)
-    mainStore.setDb(res.data)
-    Taro.hideLoading()
-    
+    // Taro.showLoading({ title:'loading', mask:true })
+    // const res = await req.post('/getAppDB')
+    // console.log(res.data)
+    // mainStore.setDb(res.data)
+    // Taro.hideLoading()
   }
 
 

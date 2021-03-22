@@ -40,6 +40,10 @@ class Index extends Component {
         Taro.navigateTo({ url: `/pages/order_g/index?type=${params}` });break;
       case 'm':
         Taro.navigateTo({ url: `/pages/order_g/index?type=${params}` });break;
+      case 's':
+        Taro.navigateTo({ url: `/pages/order_e/index?type=${params}` });break;
+      case 'c':
+        Taro.navigateTo({ url: `/pages/order_e/index?type=${params}` });break;
     }
     
   }
