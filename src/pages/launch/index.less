@@ -1,0 +1,74 @@
+@import "../../var";
+
+
+.g-launch {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx;
+  background: #fff;
+
+  .m-launch {
+    display: flex;
+    flex-direction: column;
+  
+    .m-sect {
+      display: flex;
+      margin-bottom: 60rpx;
+
+      .m-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .m-tl {
+          font-size: 60rpx;
+          color: #666;
+          font-weight: 200;
+        }
+        .m-en {
+          font-size: 40rpx;
+          font-weight: 100;
+          color: #333;
+        }
+      }
+
+      .m-logo {
+        background: #336699;
+        width: 100%;
+        height: calc( 50vw * 0.375);
+        /*width: 144rpx;*/
+        /*height: 144rpx;*/
+        /*margin-right: 20rpx;*/
+
+        image {
+          background: #fff;
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+
+    .m-btn {
+      display: flex;
+      width: 100%;
+      color: #333;
+      background: #eee;
+      margin-bottom: 40rpx;
+      justify-content: center;
+      &:after {
+        border:none;
+      }
+
+      &.m-login {
+        background: @AP_BASE;
+        color: #fff;
+      }
+    }
+
+
+  }
+}

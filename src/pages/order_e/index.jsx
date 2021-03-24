@@ -5,7 +5,7 @@ import api from '../../constant/apis'
 import req from '../../utils/request'
 import Taro from '@tarojs/taro'
 import './index.less'
-import icon_del from '../../assets/icon_del.png'
+import icon_del from '../../static/ico_del.png'
 import { $ } from '@tarojs/extend'
 import { getCurrentInstance } from '@tarojs/taro'
 

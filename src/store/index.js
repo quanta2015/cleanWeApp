@@ -49,8 +49,8 @@ class mainStore {
   selTech = null;
   selSafe = null;
   allPrice = 0;
-  // db = null;
-  db = DATA;
+  db = null;
+  // db = DATA;
 
   setArea(area) { this.area = area }
   getArea()     { return this.area }

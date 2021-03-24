@@ -1,3 +1,5 @@
+@import "../../var";
+
 .g-orderg {
 
   display: flex;
@@ -80,8 +82,8 @@
         
 
         &.sel {
-          background: #2EAE76;
-          border: 1px solid #2EAE76;
+          background: @AP_BASE;
+          border: 1px solid @AP_BASE;
           .u-nb {
             color: #fff!important;
             &:nth-child(2) {
@@ -123,8 +125,8 @@
       flex: 1;
 
       &.sel {
-        border: 1px solid #2EAE76;
-        background: #2EAE76;
+        border: 1px solid @AP_BASE;
+        background: @AP_BASE;
         color: #fff;
         .m-h {
           color: #fff;
@@ -279,7 +281,7 @@
 
       .m-ipt-save {
         font-size: 1.2rem;
-        background: #2EAE76;
+        background: @AP_BASE;
         color: #fff;
         width: 100%;
       }

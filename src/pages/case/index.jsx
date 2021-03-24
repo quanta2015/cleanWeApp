@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { View, Button, Text, Image } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
-
+import Taro from '@tarojs/taro'
 import './index.less'
 
 var API_SERVER = "https://mooc.hznu.edu.cn/cdn/"
@@ -19,7 +19,7 @@ class Case extends Component {
   }
 
   componentDidMount () { 
-    
+    Taro.setNavigationBarTitle({title:'服务案例'})
 
   }
 

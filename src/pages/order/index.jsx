@@ -11,6 +11,7 @@ import './index.less'
 class Index extends Component {
 
   async componentDidMount () {
+    Taro.setNavigationBarTitle({title:'预约服务'})
 
   //   Taro.showLoading({
   //   title:'提示内容',
