@@ -126,10 +126,14 @@ class mainStore {
     let r4 = await this.payment(r3)
     console.log(r4)
     let data = { 
-      type: type, 
-      money: money, 
-      uid: openid, 
-      date: dayjs().format('YYYYMMDDhhmmssSSS')
+      type:    type, 
+      money:   money, 
+      uid:     openid,
+      area:    this.area,
+      poi:     this.poi,
+      selTech: this.selTech,
+      selSafe: this.selSafe,
+      date: dayjs().format('YYYYMMDDhhmmssSSS'),
     }
     let r5 = await this.saveOrder(data)
     Taro.showToast({ title:'支付成功', icon: 'success', mask:true })

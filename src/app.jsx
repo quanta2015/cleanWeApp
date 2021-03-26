@@ -28,7 +28,7 @@ class App extends Component {
     Taro.showLoading({ title:'loading', mask:true })
     const res = await req.post(urls.GET_APP_DB)
     // console.log(res.data)
-    mainStore.setDb(res.data)
+    mainStore.setDb(res.data.data)
     Taro.hideLoading()
   }
 
