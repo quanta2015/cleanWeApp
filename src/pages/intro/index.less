@@ -1,3 +1,6 @@
+@import "../../var";
+
+
 .g-intro {
 
   display: flex;
@@ -15,6 +18,11 @@
     }
   }
 
+  .m-logo2 {
+    width: 100vw;
+    height: calc( 100vw * 0.15625 );
+  }
+
   .m-sect + .m-sect{
     margin-top: 0;
   }
@@ -23,6 +31,39 @@
     display: flex;
     flex-direction: column;
     margin: 20rpx 30rpx;
+
+    .m-wh {
+      display: flex;
+
+      .m-item+.m-item {
+        margin-left: 20rpx;
+      }
+      .m-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: calc((100vw - 100rpx)/3);
+        height: calc((100vw - 100rpx)/3);
+        background: #eee;
+        border-radius: 10rpx;
+        box-shadow: 4rpx 4rpx 4rpx rgba(0,0,0,.05),-4rpx -4rpx 4rpx rgba(0,0,0,.05);
+        border: 1px solid #ddd;
+
+        .m-head {
+          color: #666;
+          text-align: center;
+          padding: 20rpx 0;
+        }
+        .m-tail {
+          font-size: 24rpx;
+          padding: 0 20rpx 0 20rpx;
+          text-align: center;
+          color: #ee6600;
+          height: 80rpx;
+        }
+      }
+    }
+
     .m-title {
       display: flex;
       flex-direction: column;
@@ -68,7 +109,7 @@
 
       .m-p {
         text-align: justify;
-        font-size: .8rem;
+        font-size: .9rem;
         color: #666;
         margin-bottom: 20rpx;
         line-height: 1.67;
@@ -93,6 +134,9 @@
     background: #343a40;
     flex-wrap: wrap;
     padding: 20rpx 0;
+    margin-top: 60rpx;
+
+
     .m-mark {
       display: flex;
       width: 50vw;

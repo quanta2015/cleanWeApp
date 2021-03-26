@@ -1,238 +1,211 @@
-.g-orderg {
+@import "../../var";
+
+.g-ordere {
+
   display: flex;
   flex-direction: column;
+  padding: 20rpx;
+  background: #fff;
   height: 100vh;
 
-  .m-step3 {
-    flex-direction: row!important;
-  }
-  
-  .m-step2 {
-    margin-top: 20rpx;
-  }
 
   .m-step {
     display: flex;
     flex-direction: column;
-    padding: 10px;
-  
-    .m-tl {
-      font-size: 1.2rem;
-      font-weight: 100;
-      margin-bottom: 10px;
-      flex: 1;
-      .m-red {
-        color: #ee0000;
-      }
-    }
+    font-weight: 300;
+    font-size: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6rpx;
+    padding: 10rpx 30rpx;
+    margin-top: 20rpx;
 
-    .m-chk {
+    .m-head {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #ccc;
-      width: 80px;
-      height: 80px;
-      border: 1px dashed #ccc;
-      margin-right: 10px;
-      &.sel {
-        border: 1px solid #ee6600;
-        background: #dd0000;
-        color: #fff;
-        border: 1px solid #aa0000;
-      }
-
-      .m-pt {
-        color: #ee0000;
-      }
-    }
-
-    .m-sel {
-      display: flex;
-
-
-      .m-area {
-        display: flex;
-        flex-direction: column;
-        width: calc( 100vw / 5 - 10rpx );
-        height: calc( 100vw / 5 - 10rpx );
-        border: 1rpx dashed #aaa;
-        margin: 5rpx;
-        padding: 0 20rpx 10rpx 20rpx;
-        box-sizing: border-box;
-        justify-content: space-evenly;
-        
-
-        &.sel {
-          background: #2EAE76;
-          border: 1px solid #2EAE76;
-          .u-nb {
-            color: #fff!important;
-            &:nth-child(2) {
-              border-top: 1rpx dashed #fff;
-            }
-          }
-
-        }
-
-        .u-nb {
-          font-size: 1.2rem;
-          font-family: "Georgia";
-          padding-bottom: 10rpx;
-          color: #ccc;
-
-          &:nth-child(2) {
-            border-top: 1rpx dashed #ccc;
-            text-align: right;
-            font-size: 1.4rem;
-            color: #999;
-          }
-        } 
-
-        .u-img {
-          width: 50rpx;
-          height: 50rpx;
-        }
-      }
-    }
-
-    .m-group {
-      display: flex;
-      border: 1px dashed #999;
-      margin: 5rpx;
-      padding: 10rpx;
-      align-items: center;
-      box-sizing: border-box;
-      color: #ccc;
-      flex: 1;
-
-      &.sel {
-        border: 1px solid #2EAE76;
-        background: #2EAE76;
-        color: #fff;
-        .m-h {
-          color: #fff;
-        }
-      }
-
-      .m-item {
-        display: flex;
-        flex-direction: column;
+      
+      .m-bd {
         flex: 1;
-
-        .m-h {
-          font-size: 1rem;
-          text-align: center;
+        display: flex;
+        position: relative;
+        .m-val {
+          flex: 1;
+          margin: 0 20rpx;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
-        .m-p {
+        .m-up {
+          position: absolute;
+          right: -15rpx;
+          top: 0;
           font-size: 20rpx;
-          text-align: center;
-          color: #cc0000;
         }
       }
     }
+
+    .m-tail {
+      display: flex;
+      font-size: 1rem;
+      font-weight: 400;
+
+      .m-tl {
+        flex: 1;
+        color: #999;
+      }
+      .m-bd {
+        color: #dd0000;
+        margin: 0 20rpx;
+      }
+      .m-unit {
+        width: 40rpx;
+        font-size: 20rpx;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+
+    
+
+    .m-info {
+      display: flex;
+      font-size: 20rpx;
+      margin-top: 10rpx;
+      color: #600;
+      font-family: "microsoft yahei";    
+    }
   }
 
-
-  .m-sep {
-    height: 20rpx;
-    border-top: 1rpx solid #ccc;
-    border-bottom: 1rpx solid #ccc;
-    background: #eee;
-    margin: 20rpx 0;
-  }
-
-
-  .m-ret {
+  .m-help {
     display: flex;
-    height: 2rem;
-    padding: 0 20rpx;
-    margin: 20rpx 0;
-    /*flex-direction: column;*/
+    flex-direction: column;
+    padding: 20rpx 30rpx;
+    margin: 20rpx 0 0;
+    border: 1px solid #ccc;
+    border-radius: 10rpx;
+
+    .m-tl {
+      font-size: 40rpx;
+    margin: 0 0 20rpx 0;
+    color: @AP_BASE;
+
+    }
+    .m-main {
+      display: flex;
+      flex-direction: column;
+
+      .m-li+.m-li {
+        margin-top: 20rpx;
+      }
+      .m-li {
+        font-size: 28rpx;
+        color: #666;
+        text-align: justify;
+
+      }
+    }
+
+
+  }
+
+  .m-result {
+    margin-top: 20rpx;
+    padding: 20rpx 30rpx;;
+    color: #000;
+    border: 1rpx solid #ccc;
+    border-radius: 6rpx;
 
     .m-wrap {
       display: flex;
-      width: 50%;
-    }
+      .m-tl {
+        flex: 1;
+        color: #999;
+      }
 
-    .m-q + .m-q {
-      margin-left: 10rpx;
-    }
-
-    .m-q {
-      font-weight: 400;
-      font-size: 30px;
-      border: 1Px solid #2EAE76;
-      padding: 5Px;
-      box-sizing: border-box;
-      color: #2EAE76;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 1;
-
-      .m-icon {
-        width: 50px;
-        height: 50px;
+      .m-info {
+        color: #600;
+        font-size: 20rpx;
+        margin-top: 10rpx;
       }
     }
 
-    .m-calu {
-      flex: 1;
+    .m-bd {
       display: flex;
-      align-items: center;
-      padding-right: 20rpx;
-      color: #333;
-      font-family: 'georgia';
-
-      .m-c1 {
-        flex:1;
-        padding: 0 10px;
-        text-align: center;
+      position: relative;
+      .m-price {
+        color: #dd0000;
+        margin: 0 20rpx;
       }
-      .m-c2 {
-        text-align: right;
-        font-size: 1.5rem;
+      .m-unit {
+        width: 40rpx;
+        font-size: 20rpx;
+        display: flex;
+        align-items: center;
       }
     }
   }
 
-  .m-total {
-    display: flex;
-    padding: 20px;
-    border-top: 1px dashed #ccc;
-    margin: 20px;
-
-    .m-head {
-      font-weight: 100;
-      font-size: 1.2rem;
-      flex: 1;
-    }
-    .m-tail {
-      color: #ee0000;
-      font-family: 'georgia';
-      font-size: 1.5rem;
-    }
-  }
-
-  .m-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #cc0000;
-    padding: 10rpx;
-    margin: 20rpx;
-    border-radius: 10rpx;
-    color: #fff;
-    background: #ee0000;
+  .g-ipt {
+    background: rgba(0,0,0,.1);
     position: fixed;
-    bottom: 0;
-    right: 0;
     left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    z-index: 10;
+
+    .m-wrap {
+      width: 100%;
+      background: #eee;
+      height: 50vh;
+      position: absolute;
+      bottom: 0;
+      display: flex;
+      flex-wrap: wrap;
+      border-top: 1px solid #ccc;
+
+      .m-ipt {
+        background: #fff;
+        width: calc( (100% - 60rpx)/3 ) ;
+        font-weight: 300;
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #eee;
+        margin: 10rpx;
+        border-radius: 10rpx;
+        box-shadow: 0px 2px 2px rgba(0,0,0,.5);
+        transition: .3s;
+        &:active {
+          transform: scale(0.98); 
+          box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+        }
+      }
+
+      .m-ipt-save {
+        font-size: 1.2rem;
+        background: @AP_BASE;
+        color: #fff;
+      }
+      .m-ipt-del {
+        font-size: 1.2rem;
+        background: #dd0000;
+        color: #fff;
+        image {
+          height: 45rpx;
+          width: 45rpx;
+        }
+      }
+      
+      
+    }
+
+    .u-ret {
+
+    }
   }
 
 }
-
-
 
 

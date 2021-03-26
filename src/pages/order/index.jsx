@@ -11,6 +11,7 @@ import './index.less'
 class Index extends Component {
 
   async componentDidMount () {
+    Taro.setNavigationBarTitle({title:'预约服务'})
 
   //   Taro.showLoading({
   //   title:'提示内容',
@@ -40,6 +41,10 @@ class Index extends Component {
         Taro.navigateTo({ url: `/pages/order_g/index?type=${params}` });break;
       case 'm':
         Taro.navigateTo({ url: `/pages/order_g/index?type=${params}` });break;
+      case 's':
+        Taro.navigateTo({ url: `/pages/order_e/index?type=${params}` });break;
+      case 'c':
+        Taro.navigateTo({ url: `/pages/order_e/index?type=${params}` });break;
     }
     
   }

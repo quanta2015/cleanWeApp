@@ -1,5 +1,6 @@
 import { Component } from 'react'
-import { View, Button, Text } from '@tarojs/components'
+import Taro from '@tarojs/taro'
+import { View, Button, Text, Icon} from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
 
 import './index.less'
@@ -11,11 +12,18 @@ class Case extends Component {
 
   componentDidMount () { }
 
+  doReturn=()=>{
+    wx.switchTab({ url: `/pages/order/index` })
+  }
 
   render () {
     return (
-      <View className='index'>
-        支付成功
+      <View className='g-info-ret'>
+        <View className="m-info">
+          <Icon size='60' type='success' />
+          <Text className="m-txt">支付成功</Text>
+        </View>
+        <View className="m-btn" onClick={this.doReturn}>点击返回</View>
       </View>
     )
   }

@@ -119,12 +119,12 @@ class Shop_sp extends Component {
         <View className='footer'>
           <View className='item-footer'>
             <View className='item-footer__nav' onClick={()=>Taro.switchTab({url: '/pages/order/index'})}>
-              <Image className='item-footer__nav-img' src={require('../../assets/icon_home.png')} />
+              <Image className='item-footer__nav-img' src={require('../../static/icon_home.png')} />
             </View>
             <View className='item-footer__nav' onClick={()=>Taro.navigateTo({url: '/pages/shop_cart/index'})}>
               {cartList.length ? <AtBadge value={sumCount} maxValue={99}>
-                <Image className='item-footer__nav-img' src={require('../../assets/icon_cart.png')} />
-              </AtBadge> : <Image className='item-footer__nav-img' src={require('../../assets/icon_cart.png')} />}
+                <Image className='item-footer__nav-img' src={require('../../static/icon_cart.png')} />
+              </AtBadge> : <Image className='item-footer__nav-img' src={require('../../static/icon_cart.png')} />}
             </View>
             {/* 底部弹窗 */}
             <AtFloatLayout isOpened={this.state.isOpend} title="请选择购买数量" onClose={this.closeFloat.bind(this)}>

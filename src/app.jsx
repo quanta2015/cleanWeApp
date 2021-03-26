@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import { Provider, inject, observer } from 'mobx-react'
+import { View, Button} from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import mainStore from './store'
 import shopStore from './store/shop'
@@ -76,6 +77,15 @@ const store = {
 }
 
 class App extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      showLaunch: true,
+    }
+  }
+
   async componentDidMount () {
     Taro.showLoading({ title:'loading', mask:true })
     const res = await req.post('/getAppDB')
@@ -83,7 +93,25 @@ class App extends Component {
     mainStore.setDb(res.data)
     Taro.hideLoading()
     
+    // Taro.login({ success: res => {
+    //   Taro.getSetting({
+    //     success: function (res) {
+    //       console.log(res)
+    //       // this.setState({showLaunch:false})
+    //       // if (!res.authSetting['scope.userInfo']) {
+    //       //   Taro.authorize({
+    //       //     scope: 'scope.userInfo',
+    //       //     success: function () {
+    //       //         Taro.getUserInfo()
+    //       //     }
+    //       //   })
+    //       // }
+    //     }
+    //   })
+
+    // }})
   }
+
 
 
   render () {
