@@ -1,56 +1,23 @@
 import { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Button,Image, Text, Icon} from '@tarojs/components'
+import { View, Button, Image, Text} from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
 
 import './index.less'
+import * as urls from '../../constant/apis'
 
 
 @inject('store')
 @observer
 class Case extends Component {
-
-  componentDidMount () { 
-    
+  constructor(props) {
+    super(props)
+    this.store = this.props.store.mainStore
   }
 
-  
-  
-
-  bindUserInfo (e) {
-      // console.log(e)
-    Taro.login({ success: r => {
-
-      Taro.getUserInfo({
-        success: function(res) {
-          let user = {
-            code: r.code,
-            name: res.userInfo.nickName,
-            city: res.userInfo.city,
-            prov: res.userInfo.province,
-            img: res.userInfo.avatarUrl
-          }
-
-          Taro.setStorageSync('user',JSON.stringify(user))
-          Taro.switchTab({ url: `/pages/user/index` })
-        }
-      })
-    }})
-    
-      
-      // Taro.getUserInfo({
-      //   success: function(res) {
-      //       console.log('获取用户信息成功');
-      //   },
-      //   fail: function(e) {
-      //       console.log("获取用户信息失败 + " + JSON.stringify(e));
-      //   }
-      // )}
-
-      // this.setState({ canIUse: false })
-      // Taro.switchTab({ url: `/pages/order/index` })
-    }
-
+  bindUserInfo =() =>{
+    this.store.bindUserInfo()
+  }
 
   render () {
     return (
@@ -58,14 +25,17 @@ class Case extends Component {
         <View className="m-launch">
           <View className="m-sect">
             <View className="m-logo">
-              <Image src="https://mooc.hznu.edu.cn/cdn/logo5.png"></Image>
+              <Image src={`${urls.API_SERVER}/cdn/logo5.png`}></Image>
             </View>
             
           </View> 
           <Button className="m-btn m-login" open-type='getUserInfo' onGetUserInfo={this.bindUserInfo} >微信帐号快捷登录</Button>
           <Button className="m-btn">暂不登录</Button>
         </View> 
-         
+        <View className="m-ft">
+          <View className="m-info">登录即表示您已阅读、理解并同意</View>
+          <View className="m-info">《艾尔森用户服务协议》</View>
+        </View> 
       </View>
     )
   }

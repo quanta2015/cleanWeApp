@@ -25,13 +25,13 @@ const token = ''
 export default {
   baseOptions(params, method = 'GET') {
     let { url, data } = params
-    console.log('params', params)
+    // console.log('params', params)
     let contentType = 'application/x-www-form-urlencoded'
     contentType = params.contentType || contentType
     const option = {
       isShowLoading: false,
       loadingText: '正在加载',
-      url: API_SERVER + url,
+      url: url,
       data: data,
       method: method,
       header: { 'content-type': contentType, 'token': token },
