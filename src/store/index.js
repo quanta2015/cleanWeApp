@@ -19,7 +19,6 @@ class mainStore {
   selSafe = null;
   allPrice = 0;
   db = null;
-  // db = DATA;
 
   setArea(area) { this.area = area }
   getArea()     { return this.area }
@@ -33,12 +32,8 @@ class mainStore {
   getAllPrice()  { return this.allPrice }
   setDb(db) {this.db = db}
 
-  async listOrder(cb) {
-    let uid = JSON.parse(Taro.getStorageSync('user')).openid
-    let r = await req.post(urls.URL_LIST_ORDER, {uid:uid})
-    return r.data.data
-  }
-
+  
+  // 微信用户登录取 code
   weLogin = async () => {
     return new Promise ( resolve => {
       Taro.login({ 
@@ -47,7 +42,8 @@ class mainStore {
       })
     })
   }
-
+  
+  // 微信取用户信息
   userInfo = async () => {
     return new Promise ( resolve => {
       Taro.getUserInfo({
@@ -56,25 +52,8 @@ class mainStore {
       })
     })
   }
-
-  bindUserInfo = async () => {
-    let r1 = await this.weLogin()
-    console.log(`code: ${r1}`)
-    let r2 = await req.post(urls.URL_JSCODE2SESSION, {code:r1})
-    console.log(`openid: ${r2.data.openid}`)
-    let r3 = await this.userInfo()
-    let user = {
-      code:   r1,
-      openid: r2.data.openid,
-      name:   r3.nickName,
-      city:   r3.city,
-      prov:   r3.province,
-      img:    r3.avatarUrl
-    }
-    Taro.setStorageSync('user',JSON.stringify(user))
-    Taro.switchTab({ url: `/pages/user/index` })
-  }
-
+  
+  // 获取预支付码
   wxApi = async (openid,money) => {
     let data = {
       openid:     openid,
@@ -86,6 +65,7 @@ class mainStore {
     return ret.data.data
   }
 
+  // 微信支付
   payment = async (data)=>{
     return new Promise ( resolve => {
       Taro.requestPayment({
@@ -103,6 +83,7 @@ class mainStore {
     })
   }
 
+  // 保存订单数据
   saveOrder = async (data)=>{
     return new Promise ( resolve => {
       Taro.request({
@@ -114,7 +95,9 @@ class mainStore {
       })
     })
   }
-  
+
+
+  // 支付入口
   pay = async (money,type) => {
     let code = await this.weLogin()
     console.log(`code: ${code}`)
@@ -140,70 +123,32 @@ class mainStore {
     Taro.navigateTo({ url: `/pages/info_ret/index` })
   }
 
-  // WeSession(code,money,type) {
-  //   console.log(`code: ${code}`)
-  //   Taro.request({
-  //     method: 'POST',
-  //     url:    urls.URL_JSCODE2SESSION,
-  //     data:   {code: code},
-  //     header: { 'Content-Type': 'application/json'},
-  //     success: res => {
-  //       console.log(`openid: ${res.data.openid}`)
-  //       this.openid = res.data.openid
-  //       this.WxApi(res.data.openid,money,type)
-  //     }
-  //   })
-  // }
 
-  // WxApi = (openid,money,type)=>{
-  //   let data = {
-  //     openid:     openid,
-  //     money:      0.01, //money,
-  //     orderID:    "34318",
-  //     orderCode:  dayjs().format('YYYYMMDDhhmmssSSS'),
-  //   }
-  //   Taro.request({
-  //     method: 'post',
-  //     url: urls.URL_WXPAY,
-  //     data: json2Form(data),
-  //     header: {'Content-Type': 'application/x-www-form-urlencoded'},
-  //     success: res => {
-  //       let data = res.data.data;
-  //       console.log(data);
+  // 用微信帐号登录并保存到缓存
+  bindUserInfo = async () => {
+    let r1 = await this.weLogin()
+    console.log(`code: ${r1}`)
+    let r2 = await req.post(urls.URL_JSCODE2SESSION, {code:r1})
+    console.log(`openid: ${r2.data.openid}`)
+    let r3 = await this.userInfo()
+    let user = {
+      code:   r1,
+      openid: r2.data.openid,
+      name:   r3.nickName,
+      city:   r3.city,
+      prov:   r3.province,
+      img:    r3.avatarUrl
+    }
+    Taro.setStorageSync('user',JSON.stringify(user))
+    Taro.switchTab({ url: `/pages/user/index` })
+  }
 
-  //       Taro.requestPayment({
-  //         timeStamp: data.timeStamp+'',
-  //         nonceStr:  data.nonceStr,
-  //         package:   data.package,
-  //         signType:  'MD5',
-  //         paySign:   data.paySign,
-  //         success(res){
-  //           console.log(res)
-
-  //           Taro.request({
-  //             method: 'post',
-  //             url: urls.URL_SAVE_ORDER,
-  //             data: { uid: openid, money: money, type: type, date: dayjs().format('YYYYMMDDhhmmssSSS')},
-  //             success: res => {
-  //               Taro.showToast({ title:'支付成功', icon: 'success', mask:true })
-  //               Taro.navigateTo({ url: `/pages/info_ret/index` })
-  //             },
-  //             fail: res => {
-  //               Taro.showToast({ title:'支付数据保存失败', icon: 'none', mask:true })
-  //             }
-  //           })
-            
-  //         },
-  //         fail (res) { 
-  //           console.log(res)
-  //           Taro.showToast({ title:'支付失败', icon: 'none', mask:true })
-  //         }
-  //       })
-  //     }
-  //   })
-  // }
-
-
+  // 用户历史订单
+  async listOrder(cb) {
+    let uid = JSON.parse(Taro.getStorageSync('user')).openid
+    let r = await req.post(urls.URL_LIST_ORDER, {uid:uid})
+    return r.data.data
+  }
 
 }
 
