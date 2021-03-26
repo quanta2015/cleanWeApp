@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { Provider, inject, observer } from 'mobx-react'
 import Taro from '@tarojs/taro'
 import mainStore from './store'
+import shopStore from './store/shop'
 import 'taro-ui/dist/style/index.scss'
 import './app.less'
 import dayjs from 'dayjs'
@@ -71,7 +72,7 @@ import req from './utils/request'
 // }
 
 const store = {
-  mainStore
+  mainStore,shopStore
 }
 
 class App extends Component {

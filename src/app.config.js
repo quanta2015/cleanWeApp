@@ -12,6 +12,9 @@ export default {
     // 'pages/intro/index',
     'pages/case/index',
     'pages/shop/index',
+    'pages/shop_sp/index',
+    'pages/shop_cart/index',
+    'pages/shop_buy/index',
     'pages/user/index',   
     'pages/info_ret/index',
     
