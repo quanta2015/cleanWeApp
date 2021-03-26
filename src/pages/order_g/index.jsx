@@ -143,7 +143,7 @@ class Index extends Component {
   }
 
   render() {
-    let {area, poi, showArea, goodsPrice, selTech, selSafe, techPrice, techTime, insPrice} = this.state
+    let { area, poi, showArea, goodsPrice, selTech, selSafe, techPrice, techTime, insPrice } = this.state
     
     return (
       <View className='g-bd g-orderg'>

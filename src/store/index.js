@@ -1,46 +1,15 @@
 import { observable } from 'mobx'
 import Taro from '@tarojs/taro'
 import dayjs from 'dayjs'
+import req from '../utils/request'
+import * as urls from '../constant/apis'
 
-var URL_JSCODE2SESSION  = 'https://mooc.hznu.edu.cn/jscode2session'
-var URL_WXPAY           = "https://mooc.hznu.edu.cn/wxpay"; 
-
-const DATA = { 
-                g: { LM:0.07,GP:189,BASE_AR:50,BASE_PR:5,SP:870, SP_F:90, ST:290,ST_F:30,INS:0.03 },
-                m: { LM:0.09,GP:189,BASE_AR:50,BASE_PR:6,SP:1120,SP_F:250,ST:290,ST_F:30,INS:0.03 },
-                s: { LM:99 },
-                c: { LM:299 },
-                case: [ { name:'20峰会西子宾馆', img:'case/01.jpg' },
-                        { name:'上城区社保局', img:'case/02.jpg' },
-                        { name:'上海万怡酒店', img:'case/03.jpg' },
-                        { name:'上虞政协办公楼', img:'case/04.jpg' },
-                        { name:'下城观成幼儿园', img:'case/05.jpg' },
-                        { name:'中意文化交流中心', img:'case/06.jpg' },
-                        { name:'云呼企业管理集团', img:'case/07.jpg' },
-                        { name:'仙化传媒公司', img:'case/08.jpg' },
-                        { name:'周易研究所', img:'case/09.jpg' },
-                        { name:'宁波银行湖州分行', img:'case/10.jpg' },
-                        { name:'工商银行嵊州支行', img:'case/11.jpg' },
-                        { name:'悦悦满月子会所', img:'case/12.jpg' },
-                        { name:'新浪琴湾别墅', img:'case/13.jpg' },
-                        { name:'春晖上源府别墅', img:'case/14.jpg' },
-                        { name:'杭州下城党群服务中心', img:'case/15.jpg' },
-                        { name:'杭州市工商业联合会', img:'case/16.jpg' },
-                        { name:'杭州行知小学学院校区', img:'case/17.jpg' },
-                        { name:'果然控股集团', img:'case/18.jpg' },
-                        { name:'桐乡农业创新中心', img:'case/19.jpg' },
-                        { name:'浙大网新银湖科技园', img:'case/20.jpg' },
-                        { name:'浙江省国资委', img:'case/21.jpg' },
-                        { name:'湖州市民中心', img:'case/22.jpg' },
-                        { name:'爱弥儿幼儿园', img:'case/23.jpg' },
-                        { name:'瑞莱克斯酒店', img:'case/24.jpg' },
-                        { name:'维也纳酒店', img:'case/25.jpg' },
-                        { name:'绿城房产', img:'case/26.jpg' },
-                        { name:'融创房产', img:'case/27.jpg' },
-                        { name:'长兴县行政服务中心', img:'case/28.jpg' },
-                        { name:'靖美华庭', img:'case/29.jpg' },
-                        { name:'龙湖地产', img:'case/30.jpg' }]
-             }
+const json2Form = (json, str=[]) => {
+    for (let p in json) {
+      str.push(`${encodeURIComponent(p)}=${encodeURIComponent(json[p])}`)
+    }
+    return str.join("&");
+}
 
 class mainStore {
   openid = null;
@@ -63,68 +32,174 @@ class mainStore {
   setAllPrice(allPrice) { this.allPrice = allPrice }
   getAllPrice()  { return this.allPrice }
   setDb(db) {this.db = db}
-  
-  pay(money) {
-    Taro.login({ success: res => {this.WeSession(res.code,money)} })
+
+  async listOrder(cb) {
+    let uid = JSON.parse(Taro.getStorageSync('user')).openid
+    let r = await req.post(urls.URL_LIST_ORDER, {uid:uid})
+    return r.data.data
   }
 
-  WeSession(code,money) {
-    console.log(`code: ${code}`)
-    Taro.request({
-      method: 'POST',
-      url:    URL_JSCODE2SESSION,
-      data:   {code: code},
-      header: { 'Content-Type': 'application/json'},
-      success: res => {
-        console.log(`openid: ${res.data.openid}`)
-        this.openid = res.data.openid
-        this.WxApi(res.data.openid,money)
-      }
+  weLogin = async () => {
+    return new Promise ( resolve => {
+      Taro.login({ 
+        success: res => { resolve(res.code) },
+        fail:    err => { console.log(err) }
+      })
     })
   }
 
-  WxApi(openid,money) {
+  userInfo = async () => {
+    return new Promise ( resolve => {
+      Taro.getUserInfo({
+        success: res => { resolve(res.userInfo) },
+        fail:    err => { console.log(err) }
+      })
+    })
+  }
+
+  bindUserInfo = async () => {
+    let r1 = await this.weLogin()
+    console.log(`code: ${r1}`)
+    let r2 = await req.post(urls.URL_JSCODE2SESSION, {code:r1})
+    console.log(`openid: ${r2.data.openid}`)
+    let r3 = await this.userInfo()
+    let user = {
+      code:   r1,
+      openid: r2.data.openid,
+      name:   r3.nickName,
+      city:   r3.city,
+      prov:   r3.province,
+      img:    r3.avatarUrl
+    }
+    Taro.setStorageSync('user',JSON.stringify(user))
+    Taro.switchTab({ url: `/pages/user/index` })
+  }
+
+  wxApi = async (openid,money) => {
     let data = {
       openid:     openid,
-      money:      money,
-      orderID:    "34318",
+      money:      0.01, //money,
+      orderID:    "181818",
       orderCode:  dayjs().format('YYYYMMDDhhmmssSSS'),
     }
-    Taro.request({
-      method: 'post',
-      url: URL_WXPAY,
-      data: this.json2Form(data),
-      header: {'Content-Type': 'application/x-www-form-urlencoded'},
-      success: res => {
-        let data = res.data.data;
-        console.log(data);
+    let ret = await req.post(urls.URL_WXPAY, json2Form(data))
+    return ret.data.data
+  }
 
-        Taro.requestPayment({
-          timeStamp: data.timeStamp+'',
-          nonceStr:  data.nonceStr,
-          package:   data.package,
-          signType:  'MD5',
-          paySign:   data.paySign,
-          success(res){
-            console.log(res)
-            Taro.showToast({ title:'支付成功', mask:true })
-            Taro.navigateTo({ url: `/pages/info_ret/index` })
-          },
-          fail (res) { 
-            console.log(res)
-            Taro.showToast({ title:'支付失败', mask:true })
-          }
-        })
-      }
+  payment = async (data)=>{
+    return new Promise ( resolve => {
+      Taro.requestPayment({
+        signType:  'MD5',
+        timeStamp: data.timeStamp+'',
+        nonceStr:  data.nonceStr,
+        package:   data.package,
+        paySign:   data.paySign,
+        success(res){ resolve(res) },
+        fail (res) { 
+          console.log(res)
+          Taro.showToast({ title:'支付失败', icon: 'none', mask:true })
+        }
+      })
     })
   }
 
-  json2Form(json, str=[])  {
-    for (let p in json) {
-      str.push(`${encodeURIComponent(p)}=${encodeURIComponent(json[p])}`)
-    }
-    return str.join("&");
+  saveOrder = async (data)=>{
+    return new Promise ( resolve => {
+      Taro.request({
+        method: 'post',
+        url: urls.URL_SAVE_ORDER,
+        data: data,
+        success: res => { resolve(res) },
+        fail:    res => { Taro.showToast({ title:'支付数据保存失败', icon:'none', mask:true }) }
+      })
+    })
   }
+  
+  pay = async (money,type) => {
+    let code = await this.weLogin()
+    console.log(`code: ${code}`)
+    let r2 = await req.post(urls.URL_JSCODE2SESSION, {code:code})
+    let openid = r2.data.openid
+    console.log(`openid: ${openid}`)
+    let r3 = await this.wxApi(openid, money)
+    console.log(r3)
+    let r4 = await this.payment(r3)
+    console.log(r4)
+    let data = { 
+      type: type, 
+      money: money, 
+      uid: openid, 
+      date: dayjs().format('YYYYMMDDhhmmssSSS')
+    }
+    let r5 = await this.saveOrder(data)
+    Taro.showToast({ title:'支付成功', icon: 'success', mask:true })
+    Taro.navigateTo({ url: `/pages/info_ret/index` })
+  }
+
+  // WeSession(code,money,type) {
+  //   console.log(`code: ${code}`)
+  //   Taro.request({
+  //     method: 'POST',
+  //     url:    urls.URL_JSCODE2SESSION,
+  //     data:   {code: code},
+  //     header: { 'Content-Type': 'application/json'},
+  //     success: res => {
+  //       console.log(`openid: ${res.data.openid}`)
+  //       this.openid = res.data.openid
+  //       this.WxApi(res.data.openid,money,type)
+  //     }
+  //   })
+  // }
+
+  // WxApi = (openid,money,type)=>{
+  //   let data = {
+  //     openid:     openid,
+  //     money:      0.01, //money,
+  //     orderID:    "34318",
+  //     orderCode:  dayjs().format('YYYYMMDDhhmmssSSS'),
+  //   }
+  //   Taro.request({
+  //     method: 'post',
+  //     url: urls.URL_WXPAY,
+  //     data: json2Form(data),
+  //     header: {'Content-Type': 'application/x-www-form-urlencoded'},
+  //     success: res => {
+  //       let data = res.data.data;
+  //       console.log(data);
+
+  //       Taro.requestPayment({
+  //         timeStamp: data.timeStamp+'',
+  //         nonceStr:  data.nonceStr,
+  //         package:   data.package,
+  //         signType:  'MD5',
+  //         paySign:   data.paySign,
+  //         success(res){
+  //           console.log(res)
+
+  //           Taro.request({
+  //             method: 'post',
+  //             url: urls.URL_SAVE_ORDER,
+  //             data: { uid: openid, money: money, type: type, date: dayjs().format('YYYYMMDDhhmmssSSS')},
+  //             success: res => {
+  //               Taro.showToast({ title:'支付成功', icon: 'success', mask:true })
+  //               Taro.navigateTo({ url: `/pages/info_ret/index` })
+  //             },
+  //             fail: res => {
+  //               Taro.showToast({ title:'支付数据保存失败', icon: 'none', mask:true })
+  //             }
+  //           })
+            
+  //         },
+  //         fail (res) { 
+  //           console.log(res)
+  //           Taro.showToast({ title:'支付失败', icon: 'none', mask:true })
+  //         }
+  //       })
+  //     }
+  //   })
+  // }
+
+
 
 }
 

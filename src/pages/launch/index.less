@@ -13,6 +13,7 @@
   .m-launch {
     display: flex;
     flex-direction: column;
+    width: 60vw;
   
     .m-sect {
       display: flex;
@@ -39,11 +40,7 @@
       .m-logo {
         background: #336699;
         width: 100%;
-        height: calc( 50vw * 0.375);
-        /*width: 144rpx;*/
-        /*height: 144rpx;*/
-        /*margin-right: 20rpx;*/
-
+        height: calc( 60vw * 0.375);
         image {
           background: #fff;
           height: 100%;
@@ -68,7 +65,16 @@
         color: #fff;
       }
     }
+  }
 
-
+  .m-ft {
+    flex-direction: column;
+    position: absolute;
+    bottom: 20rpx;
+    font-size: 24rpx;
+    color: #666;
+    .m-info {
+      text-align: center;
+    }
   }
 }

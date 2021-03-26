@@ -12,27 +12,6 @@ class Index extends Component {
 
   async componentDidMount () {
     Taro.setNavigationBarTitle({title:'预约服务'})
-
-  //   Taro.showLoading({
-  //   title:'提示内容',
-  //   mask:true,  
-  // })
-
-    // try { 
-    //   const res = await req.post('/getDataList',{aa:'b'})
-    //   console.log(res.data)
-    //   this.setState({
-    //     data: res.data,
-    //     loading: false
-    //   })
-    // } catch (error) {
-    //   Taro.showToast({
-    //     title: '载入远程数据错误'
-    //   })
-    // }
-
-    // let { mainStore } = this.props.store
-    // mainStore.pay("0.02")
   }
 
   doOrder = (params) =>{

@@ -38,7 +38,7 @@ class Index extends Component {
   doPay=()=>{
     let { mainStore } = this.props.store
     let money = (mainStore.getAllPrice()/100000).toFixed(2)
-    mainStore.pay(money)
+    mainStore.pay(money, this.state.type)
   }
 
   
