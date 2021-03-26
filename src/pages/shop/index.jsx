@@ -4,6 +4,7 @@ import { View, Button, Text, Image } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
 import { Swiper, SwiperItem } from '@tarojs/components'
 import Taro from '@tarojs/taro'
+import { AtFab } from 'taro-ui'
 import './index.less'
 
 
@@ -47,9 +48,11 @@ class Shop extends Component {
     }
   }
   componentDidMount() {
+    const { shopStore } = this.props.store
+    shopStore.getCart()
     //获取商品列表
-   }
-  handleClick  (id)  {
+  }
+  handleClick(id) {
     Taro.navigateTo({
       url: `/pages/shop_sp/index?id=${id}`
     })
@@ -96,8 +99,13 @@ class Shop extends Component {
         })}
       </View>
       <View className='more'>
-          <Text className='more-txt'>更多商品，敬请期待</Text>
-        </View>
+        <Text className='more-txt'>更多商品，敬请期待</Text>
+      </View>
+      <View className='fab'>
+        <AtFab onClick={()=>Taro.navigateTo({url: '/pages/shop_cart/index'})}>
+          <Text className='at-fab__icon at-icon at-icon-shopping-cart'></Text>
+        </AtFab>
+      </View>
     </View>
   }
 }

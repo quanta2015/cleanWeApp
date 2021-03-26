@@ -127,7 +127,7 @@ class Shop_sp extends Component {
               </AtBadge> : <Image className='item-footer__nav-img' src={require('../../static/icon_cart.png')} />}
             </View>
             {/* 底部弹窗 */}
-            <AtFloatLayout isOpened={this.state.isOpend} title="请选择购买数量" onClose={this.closeFloat.bind(this)}>
+            <AtFloatLayout  isOpened={this.state.isOpend} title="请选择购买数量" onClose={this.closeFloat.bind(this)}>
               <View className="buy-tags">
                 <View>
                   <AtInputNumber
