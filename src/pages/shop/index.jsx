@@ -6,7 +6,10 @@ import { Swiper, SwiperItem } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtFab } from 'taro-ui'
 import './index.less'
+import req from '../../utils/request'
+import * as urls from '../../constant/apis'
 
+const fract=(n)=>{ return (n - Math.trunc(n))*100 }
 
 @inject('store')
 @observer
@@ -14,43 +17,19 @@ class Shop extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      list: [
-        {
-          id: 1,
-          img: 'http://lc-zJqDdcsx.cn-e1.lcfile.com/1854d11cec1b763115ea.jpg',
-          img2: 'http://lc-zJqDdcsx.cn-e1.lcfile.com/3e7494d00f825828a155.png',
-          title: '甲醛净',
-          des: '500ml/瓶',
-          price: '168',
-        },
-        {
-          id: 2,
-          img: 'http://lc-zJqDdcsx.cn-e1.lcfile.com/dc4dca518418d9c556e0.jpg',
-          title: '除味剂',
-          des: '500ml/瓶',
-          price: '158',
-        },
-        {
-          id: 3,
-          img: 'https://jdc.jd.com/img/200',
-          title: 'xxxx',
-          des: 'dddd',
-          price: '22',
-        },
-        {
-          id: 4,
-          img: 'https://jdc.jd.com/img/200',
-          title: 'xx',
-          des: 'ddd',
-          price: '22',
-        },
-      ],
+      list: [],
     }
   }
-  componentDidMount() {
-    const { shopStore } = this.props.store
-    shopStore.getCart()
-    //获取商品列表
+  async componentDidMount () {
+    // const { shopStore } = this.props.store
+    // shopStore.getCart()
+    // //获取商品列表
+
+    Taro.showLoading({ title:'loading', mask:true })
+    const r = await req.post(urls.URL_LIST_GOODS)
+    console.log(r.data.data)
+    this.setState({ list: r.data.data})
+    Taro.hideLoading()
   }
   handleClick(id) {
     Taro.navigateTo({
@@ -59,38 +38,34 @@ class Shop extends Component {
   }
 
   render() {
+    let {list} = this.state
+
+
     return <View className='shop'>
       <View className='shop__title'>
         <Text className='shop__title-txt'>推荐商品</Text>
       </View>
       <View className='shop__list'>
-        {this.state.list.map((item) => {
-          const { id, img, img2, title, des, price } = item
+        { list.map((item) => {
+          const { id, img_h1, img_h2, name, spec, price, unit } = item
           return (
-            <View
-              key={id}
-              className='shop__list-item'
-              onClick={this.handleClick.bind(this, id)}
-            >
+            <View className='shop__list-item'  onClick={this.handleClick.bind(this, id)} >
               <View className='shop__list-item-info'>
                 <Swiper circular autoplay>
-                  <SwiperItem>
-                    <Image className='shop__list-item-img' src={img} />
-                  </SwiperItem>
-                  {
-                    img2 ? <SwiperItem><Image className='shop__list-item-img' src={img2} /></SwiperItem> : null
-                  }
+                  <SwiperItem><Image className='shop__list-item-img' src={`${urls.API_SERVER}/${img_h1}`} /></SwiperItem>
+                  <SwiperItem><Image className='shop__list-item-img' src={`${urls.API_SERVER}/${img_h2}`} /></SwiperItem>
                 </Swiper>
                 <Text className='shop__list-item-desc' numberOfLines={1}>
-                  {des}
+                  {name}
                 </Text>
                 <Text className='shop__list-item-name' numberOfLines={1}>
-                  {title}
+                  {spec}/{unit}
                 </Text>
                 <View className='shop__list-item-price-wrap'>
-                  <Text className='shop__list-item-price'>
-                    ¥{price}
-                  </Text>
+                  <View className='shop__list-item-price'>
+                    <Text className="m-i">{parseInt(price)}</Text>.
+                    <Text className="m-f">{fract(price).toString().padEnd(2,'0')}</Text>
+                  </View>
 
                 </View>
               </View>

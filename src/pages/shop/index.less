@@ -2,7 +2,7 @@
 
 .shop {
   margin-top: 0px;
-  background: #ffffff;
+  background: #efefef;
 }
 
 .shop__title {
@@ -34,14 +34,9 @@
     width: 45%;
 
     &-desc {
-      padding: 0 10px;
-      width: 100%;
-      line-height: 70px;
-      color: #9e8962;
-      font-size: 24px;
-      background: #f0ebe2;
+      padding: 15rpx 20rpx 0 20rpx;
+      font-size: 30rpx;
       overflow: hidden;
-      @include: text-ellipsis;
     }
 
     &-img {
@@ -56,31 +51,49 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      background: #fff;
+      border-radius: 10rpx;
     }
 
     &-name {
       color: #333;
-      padding: 10px 10px;
-      width: 310px;
-      font-size: 28px;
-      line-height: 40px;
+      padding: 10rpx 20rpx;
+      font-size: 20rpx;
+      line-height: 40rpx;
       overflow: hidden;
-      @include: text-ellipsis;
+      text-align: right;
     }
 
     &-price-wrap {
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: flex-end;
+      padding: 0 20rpx 10rpx;
     }
 
     &-price {
-      color:  #ab2b2b;
-      font-size: 32px;
-      line-height: 48px;
+      color: #cc0000;
+      position: relative;
+      display: flex;
+      align-items: baseline;
+
+      .m-i {
+        font-size: 40rpx;
+      }
+      .m-f {
+        font-size: 20rpx;
+      }
+
+      &:before {
+        content: '¥';
+        display: block;
+        font-size: 24rpx;
+        position: absolute;
+        left: -20rpx;
+        bottom: 6rpx;
+      }
     }
-
-
     
   }
 }

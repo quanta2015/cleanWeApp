@@ -8,3 +8,7 @@ export const URL_SAVE_ORDER       = API_SERVER + '/saveOrder'
 export const URL_LIST_ORDER       = API_SERVER + '/listOrder'
 
 export const URL_LIST_GOODS       = API_SERVER + '/listGoods'
+export const URL_SAVE_SP_GOODS    = API_SERVER + '/saveShoppingGoods'
+export const URL_LIST_SP_GOODS    = API_SERVER + '/listShoppingGoods'
+
+   
