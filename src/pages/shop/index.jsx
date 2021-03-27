@@ -51,7 +51,7 @@ class Shop extends Component {
           return (
             <View className='shop__list-item'  onClick={this.handleClick.bind(this, id)} >
               <View className='shop__list-item-info'>
-                <Swiper circular autoplay>
+                <Swiper circular autoplay   className='m-swiper'>
                   <SwiperItem><Image className='shop__list-item-img' src={`${urls.API_SERVER}/${img_h1}`} /></SwiperItem>
                   <SwiperItem><Image className='shop__list-item-img' src={`${urls.API_SERVER}/${img_h2}`} /></SwiperItem>
                 </Swiper>
