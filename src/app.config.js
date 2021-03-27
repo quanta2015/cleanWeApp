@@ -1,7 +1,7 @@
 export default {
   pages: [
 
-    'pages/shop/index',
+    
     'pages/order/index',
     'pages/case/index',
     'pages/intro/index',
@@ -11,7 +11,7 @@ export default {
     'pages/order_g_n2/index',
     'pages/info_ret/index',
     
-    
+    'pages/shop/index',
     'pages/shop_sp/index',
     'pages/shop_cart/index',
     'pages/shop_buy/index',

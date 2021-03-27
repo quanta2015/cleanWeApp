@@ -12,7 +12,7 @@ var API_SERVER = "https://mooc.hznu.edu.cn/cdn/"
 class Case extends Component {
   constructor(props) {
     super(props)
-
+    console.log(this.props.store)
     this.state = {
       db: this.props.store.mainStore.db.case,
     }
