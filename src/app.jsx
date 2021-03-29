@@ -30,6 +30,7 @@ class App extends Component {
     console.log(res.data)
     mainStore.setDb(res.data)
     Taro.hideLoading()
+    
   }
 
 
