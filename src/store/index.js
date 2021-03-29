@@ -182,6 +182,13 @@ class mainStore {
     return r.data.data
   }
 
+  // 用户历史订单
+  async listShopping(cb) {
+    let uid = JSON.parse(Taro.getStorageSync('user')).openid
+    let r = await req.post(urls.URL_LIST_SP_GOODS, {uid:uid})
+    return r.data.data
+  }
+
 }
 
 

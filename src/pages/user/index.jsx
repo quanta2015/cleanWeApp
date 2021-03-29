@@ -44,10 +44,10 @@ class User extends Component {
   } 
 
   doShowOrder=()=>{
-    Taro.navigateTo({ url: `/pages/order_his/index` })
+    Taro.navigateTo({ url: `/pages/his_order/index` })
   }
   doShowGoods=()=>{
-    // Taro.navigateTo({ url: `/pages/launch/index` })
+    Taro.navigateTo({ url: `/pages/his_shoping/index` })
   }
 
 

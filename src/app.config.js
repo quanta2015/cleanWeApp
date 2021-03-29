@@ -18,8 +18,8 @@ export default {
        
     'pages/user/index',
     'pages/launch/index', 
-    'pages/order_his/index',
-   
+    'pages/his_order/index',
+    'pages/his_shopping/index',
     
   ],
   tabBar: {
