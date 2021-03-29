@@ -5,14 +5,17 @@
 .g-index {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 60rpx;
   align-items: center;
   height: 100vh;
+  position: fixed;
+  width: 100%;
 
   .m-head {
     color: #cc0000;
     font-size: 2.5rem;
-    font-weight: 100;
+    font-weight: 200;
   }
 
   .m-wrap {
@@ -114,15 +117,43 @@
 
 
   .m-info {
-    font-weight: 100;
+    font-weight: 300;
     font-size: .8rem;
   }
-}
 
-.u-rmb {
-  color: #ee0000;
-}
+  .m-ft {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    width: 100%;
+    bottom: 10rpx;
+    justify-content: center;
+    font-weight: 200;
 
+
+    .m-ft-info {
+      font-size: 28rpx;
+      text-align: center;
+      .m-c,.m-p {
+        color: #cc0000;
+      }
+
+    }
+
+  }
+
+  .m-pop {
+    position: absolute;
+    left: 20rpx;
+    font-size: 16rpx;
+    background: #3366cc;
+    color: #fff;
+    border-radius: 20rpx;
+    padding: 4rpx 12rpx;
+    bottom: 15%;
+    z-index: 99999;
+  }
+}
 
 
 

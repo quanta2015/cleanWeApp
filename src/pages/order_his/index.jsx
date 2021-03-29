@@ -29,18 +29,12 @@ class Index extends Component {
   }
 
   async componentDidMount() {
+    Taro.showLoading({ title:'loading', mask:true })
     let r = await this.props.store.mainStore.listOrder()
-    console.log(r)
-
+    // console.log(r)
     this.setState({ list: r})
+    Taro.hideLoading()
   }
-
-
-  // doPay=()=>{
-  //   let { mainStore } = this.props.store
-  //   let money = (mainStore.getAllPrice()/100000).toFixed(2)
-  //   mainStore.pay(money, this.state.type)
-  // }
 
   formatDate=(d)=>{
     return `${d.substring(0,4)}-${d.substring(4,6)}-${d.substring(6,8)}`
