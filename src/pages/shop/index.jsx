@@ -31,6 +31,7 @@ class Shop extends Component {
     this.setState({ list: r.data.data})
     Taro.hideLoading()
   }
+  
   handleClick(id) {
     Taro.navigateTo({
       url: `/pages/shop_sp/index?id=${id}`
