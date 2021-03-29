@@ -3,7 +3,8 @@ import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
 import { AtButton,AtInputNumber } from 'taro-ui'
-
+import req from '../../utils/request'
+import * as urls from '../../constant/apis'
 import './index.less'
 
 
@@ -31,11 +32,11 @@ class Shop_cart extends Component {
             return <View className="cart_list">
               <View className="cart_item">
                 <View className="cart_item_left">
-                  <Image src={item.img} />
+                  <Image src={`${urls.API_SERVER}/${item.img_h1}`} />
                 </View>
                 <View className="cart_item_right">
-                  <Text className="cart_item_right_title" numberOfLines={1}>{item.title}</Text>
-                  <Text className="cart_item_right_spe">{item.desc}</Text>
+                  <Text className="cart_item_right_title" numberOfLines={1}>{item.name}</Text>
+                  <Text className="cart_item_right_spe">{item.spec}/{item.unit}</Text>
                   <Text className="cart_item_right_price">单价 : ¥ {item.price} x {item.count}</Text>
                   <View className="cart_item_right_buy-quantity">
                     <AtInputNumber

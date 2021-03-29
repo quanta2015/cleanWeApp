@@ -21,9 +21,9 @@ class Shop extends Component {
     }
   }
   async componentDidMount () {
-    // const { shopStore } = this.props.store
-    // shopStore.getCart()
-    // //获取商品列表
+    const { shopStore } = this.props.store
+    shopStore.getCart()
+    //获取商品列表
 
     Taro.showLoading({ title:'loading', mask:true })
     const r = await req.post(urls.URL_LIST_GOODS)

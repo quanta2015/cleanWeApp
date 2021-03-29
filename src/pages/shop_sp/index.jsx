@@ -5,6 +5,8 @@ import { observer, inject } from 'mobx-react'
 import { getCurrentInstance } from '@tarojs/taro'
 import { Swiper, SwiperItem } from '@tarojs/components'
 import { AtBadge, AtFloatLayout, AtInputNumber } from 'taro-ui'
+import req from '../../utils/request'
+import * as urls from '../../constant/apis'
 import './index.less'
 
 
@@ -35,9 +37,15 @@ class Shop_sp extends Component {
     shopStore.getCart()
     this.getGoodsInfo()
   }
-  getGoodsInfo() {
+  
+  async getGoodsInfo() {
     const id = getCurrentInstance().router.params.id
-    //id获取商品详情替换data
+
+    Taro.showLoading({ title:'loading', mask:true })
+    const r = await req.post(urls.URL_LIST_GOODS)
+    console.log(id,r.data.data)
+    this.setState({ data: r.data.data[id-1]})
+    Taro.hideLoading()
   }
   
   //关闭浮动弹窗
@@ -84,7 +92,7 @@ class Shop_sp extends Component {
   render() {
 
     // const height = Taro.getSystemInfoSync().windowHeight
-    const { id, img, img2, title, des, price, detail } = this.state.data
+    const { id, img_h1, img_h2,img_bd, name, spec, price, unit } = this.state.data
     const { shopStore: { cartList,sumCount } } = this.props.store
     return (
       <View className='goods'>
@@ -101,19 +109,19 @@ class Shop_sp extends Component {
             indicatorDots
           >
             <SwiperItem>
-              <Image className='img' src={img} />
+              <Image className='img' src={`${urls.API_SERVER}/${img_h1}`} />
             </SwiperItem>
             <SwiperItem>
-              <Image className='img' src={img2} />
+              <Image className='img' src={`${urls.API_SERVER}/${img_h2}`} />
             </SwiperItem>
           </Swiper>
           {/* <!-- 商品详情 --> */}
           <View className='goods_top'>
-            <View class='goods_name'>{title}</View>
-            <View class='goods_desc'>{des}</View>
+            <View class='goods_name'>{name}</View>
+            <View class='goods_desc'>{spec}/{unit}</View>
           </View>
           <View className='goods_price'>￥ {price}</View>
-          <Image mode='widthFix' className='detail' src={detail} />
+          <Image mode='widthFix' className='detail' src={`${urls.API_SERVER}/${img_bd}`} />
         </ScrollView>
 
         <View className='footer'>

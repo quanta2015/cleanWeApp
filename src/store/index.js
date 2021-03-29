@@ -123,6 +123,38 @@ class mainStore {
     Taro.navigateTo({ url: `/pages/info_ret/index` })
   }
 
+    // 购物支付入口
+    payGoods = async (params) => {
+      let code = await this.weLogin()
+      console.log(`code: ${code}`)
+      let r2 = await req.post(urls.URL_JSCODE2SESSION, { code: code })
+      let openid = r2.data.openid
+      console.log(`openid: ${openid}`)
+      let r3 = await this.wxApi(openid, params.sumPrice)
+      console.log(r3)
+      let r4 = await this.payment(r3)
+      console.log(r4)
+  
+       return await new Promise((resolve, reject) => {
+        Taro.request({
+          method: 'post',
+          url: urls.URL_SAVE_SP_GOODS,
+          data: { params },
+          success: res => {
+            console.log(1);
+            resolve(res),
+            Taro.showToast({ title: '支付成功', icon: 'success', mask: true }),
+            Taro.navigateTo({ url: `/pages/info_ret/index` })
+          },
+          fail: err => {
+            console.log(2);
+            reject(err)
+            Taro.showToast({ title: '支付数据保存失败', icon: 'none', mask: true })
+          }
+        })
+      })
+    }
+
 
   // 用微信帐号登录并保存到缓存
   bindUserInfo = async () => {
