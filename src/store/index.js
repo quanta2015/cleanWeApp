@@ -134,12 +134,12 @@ class mainStore {
       console.log(r3)
       let r4 = await this.payment(r3)
       console.log(r4)
-  
+      let data={...params, uid:openid,}
        return await new Promise((resolve, reject) => {
         Taro.request({
           method: 'post',
           url: urls.URL_SAVE_SP_GOODS,
-          data:  params ,
+          data:  data ,
           success: res => {
             console.log(res);
             resolve(res),
