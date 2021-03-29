@@ -139,16 +139,16 @@ class mainStore {
         Taro.request({
           method: 'post',
           url: urls.URL_SAVE_SP_GOODS,
-          data: { params },
+          data:  params ,
           success: res => {
-            console.log(1);
+            console.log(res);
             resolve(res),
             Taro.showToast({ title: '支付成功', icon: 'success', mask: true }),
             Taro.navigateTo({ url: `/pages/info_ret/index` })
           },
           fail: err => {
-            console.log(2);
             reject(err)
+            console.log(err);
             Taro.showToast({ title: '支付数据保存失败', icon: 'none', mask: true })
           }
         })

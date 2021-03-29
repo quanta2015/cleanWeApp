@@ -42,7 +42,7 @@ class Shop_buy extends Component {
     }
   }
 
-  pay = () => {
+  async pay  ()  {
     const p = getCurrentInstance().router.params
     let { mainStore, shopStore } = this.props.store
     let data=this.state
@@ -55,20 +55,9 @@ class Shop_buy extends Component {
       string=string.join("|")
       data.buyList=string
       console.log(data);//传参
-      //请求测试
-      Taro.request({
-          method: 'post',
-          url: urls.URL_SAVE_SP_GOODS,
-          data: {params:data},
-          success: res => { console.log(res); },
-          fail:    err => { console.log(err); }
-        })
 
-      mainStore.payGoods(data).then(
-        //从购物车支付成功后清除购物车 / 直接下单不清除
-        p.id || shopStore.clearCart(),
-        console.log(1,p.id)
-      )
+      await mainStore.payGoods(data)
+      p.id || shopStore.clearCart()
     } else {
       Taro.showToast({
         title: '请填写完整收货人信息',
@@ -124,7 +113,7 @@ class Shop_buy extends Component {
                 <Text className="amount-money">¥ {sumPrice}</Text>
               </View>
               <View className="right">
-                <AtButton className="button" type="primary" onClick={this.pay}>立即支付</AtButton>
+                <AtButton className="button" type="primary" onClick={this.pay.bind(this)}>立即支付</AtButton>
               </View>
             </View>
             :

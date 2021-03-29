@@ -37,21 +37,15 @@ class shopStore {
   }
 
   @action saveCart(){
-    Taro.setStorage({
-      key:"cartList",
-      data:this.cartList
-    })
+    Taro.setStorageSync('cartList',this.cartList)
   }
   @action getCart(){
-    const that=this;
-    Taro.getStorage({
-      key: 'cartList',
-      success: function (res) {
-        that.cartList=res.data
-        that.calculateSum()
-      }})
+    let value=Taro.getStorageSync('cartList')
+    if(value){
+      this.cartList=value
+      this.calculateSum()
+    }
   }
-
   @action clearCart() {
     this.cartList=[]
     this.saveCart()
