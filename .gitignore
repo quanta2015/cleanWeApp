@@ -1,6 +1,7 @@
-dist/
-deploy_versions/
-.temp/
-.rn_temp/
+clean/dist/
+clean/node_modules/
+server/node_modules/
 node_modules/
 .DS_Store
+
+data.md
