@@ -1,6 +1,7 @@
 clean/dist/
 clean/node_modules/
 server/node_modules/
+doc/
 node_modules/
 .DS_Store
 
