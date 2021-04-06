@@ -15,6 +15,13 @@ class Case extends Component {
     }
   }
 
+  onShareAppMessage (res) {
+    return { title: '艾尔森除醛', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
+  }
+  onShareTimeline () {
+    return {}
+  }
+
   render () {
     let {db} = this.state
 
@@ -33,7 +40,7 @@ class Case extends Component {
                 <View className="m-name">{item.name}</View>
               </View>
               <View className="m-pic">
-                <Image src={`${API_SERVER}/cdn/${item.img}?${Math.random()/9999}`}></Image>
+                <Image src={`${API_SERVER}/${item.img}?${Math.random()/9999}`}></Image>
               </View>
             </View>
           )}

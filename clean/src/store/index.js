@@ -57,7 +57,7 @@ class mainStore {
   wxApi = async (openid,money) => {
     let data = {
       openid:     openid,
-      money:      0.01, //money,
+      money:      money, 
       orderID:    "181818",
       orderCode:  dayjs().format('YYYYMMDDhhmmssSSS'),
     }
@@ -163,6 +163,7 @@ class mainStore {
     let r2 = await req.post(urls.URL_JSCODE2SESSION, {code:r1})
     console.log(`openid: ${r2.data.openid}`)
     let r3 = await this.userInfo()
+    console.log(r3)
     let user = {
       code:   r1,
       openid: r2.data.openid,

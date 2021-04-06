@@ -20,10 +20,17 @@ class Shop extends Component {
       list: [],
     }
   }
+
+  onShareAppMessage (res) {
+    return { title: '艾尔森除醛', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
+  }
+  onShareTimeline () {
+    return {}
+  }
+
   async componentDidMount () {
     const { shopStore } = this.props.store
     shopStore.getCart()
-    //获取商品列表
 
     Taro.showLoading({ title:'loading', mask:true })
     const r = await req.post(urls.URL_LIST_GOODS)

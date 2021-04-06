@@ -1,12 +1,12 @@
+const fs = require("fs")
 var express = require('express')
 var router = express.Router()
 var request = require('request')
 var urllib = require('urllib')
-var xmlreader = require("xmlreader")
 var db = require("../db/db")
-var wxpay  = require('../utils/wepay')
-var d = require("../data/data")
 
+var d = require("../data/data")
+var wxpay  = require('../utils/wepay')
 
 const appid           = 'wxf121d862d28158fd'
 const appsecret       = '6eabc7171775b5b3870b7215ccee8571'
@@ -19,16 +19,7 @@ const URL_UNIFIDORDER = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
 const URL_SESSION     = (code)=>{ return `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appsecret}&js_code=${code}&grant_type=authorization_code` }
 
 
-
-const DATA = { 
-                g: { LM:0.07,GP:189,BASE_AR:50,BASE_PR:5,SP:870, SP_F:90, ST:290,ST_F:30,INS:0.03 },
-                m: { LM:0.09,GP:189,BASE_AR:50,BASE_PR:6,SP:1120,SP_F:250,ST:290,ST_F:30,INS:0.03 },
-                s: { LM:99 },
-                c: { LM:299 },
-                case: d.CASE,
-                city: d.CITY,
-                fn:   d.FN,
-             }
+const clone =(e)=>{ return JSON.parse(JSON.stringify(e))} 
 
 const callSQLProc = (sql, params, res)=>{
   return new Promise (resolve => {
@@ -46,11 +37,6 @@ const callP = async (sql, params, res) => {
   return  await callSQLProc(sql, params, res)
 }
 
-
-
-router.post('/getAppDB', function (req, res) {
-  res.end( JSON.stringify(DATA) )
-})
 
 
 router.post('/jscode2session', function (req, res) {
@@ -118,6 +104,84 @@ router.post('/wxpay', async function (req, res) {
   let minisign = wxpay.paysignjsapimini(appid, nonce_str, package, 'MD5', timestamp, mchkey);
   res.end( JSON.stringify({ status: '200', data: { 'appId': appid, 'partnerId': mchid, 'prepayId': prepay_id, 'nonceStr': nonce_str, 'timeStamp': timestamp, 'package': package,'paySign': minisign } }));
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -- business logic -----------------
+
+
+router.post('/login',async (req, res, next) =>{
+  let params = req.body
+  let sql = `CALL PROC_USER_LOGIN(?)`
+  let r = await callP(sql, params, res)
+
+  if (r.length > 0) {
+    let token = jwt.sign(clone(r[0]), SECRET_KEY)
+    res.status(200).json({code: 200, data: r[0], token: token, msg: '登录成功'})
+  } else {
+    res.status(200).json({code: 301, data: null, msg: '用户名或密码错误'})
+  }
+  
+})
+
+
+
+router.post('/getCount', async function (req, res) {
+  let sql  = `CALL PROC_CL_COUNT(?)`
+  let r = await callP(sql, null, res)
+  let count = clone(r[0]).count
+  res.status(200).json({ code: 200, data: count})
+})
+
+router.post('/getAppDB', async (req, res) =>{
+  let sql1  = `CALL PROC_CL_LIST_CASE(?)`
+  let sql2  = `CALL PROC_CL_LIST_PARAMS(?)`
+  let r = clone(await callP(sql1, null, res))
+  let q = clone(await callP(sql2, null, res))
+  q.forEach((item,i)=>{
+    for(var attr in item) {
+      q[i][attr] = ((attr!=='type')&&(attr!=='id'))?parseFloat(q[i][attr]):q[i][attr]
+    }
+  })
+  const DATA = { g:q[0],m:q[1],s:q[2],c:q[3],case:r,city: d.CITY,fn:d.FN }
+  res.end(JSON.stringify(DATA))
+})
+
+
+router.post('/saveParams', async (req, res) =>{
+  let params = req.body 
+  let sql1  = `CALL PROC_CL_SAVE_PARAMS_G(?)`
+  let sql2  = `CALL PROC_CL_SAVE_PARAMS_M(?)`
+  let sql3  = `CALL PROC_CL_SAVE_PARAMS_S(?)`
+  let sql4  = `CALL PROC_CL_SAVE_PARAMS_C(?)`
+  let r = await callP(sql1, params.g, res)
+  let p = await callP(sql2, params.m, res)
+  let q = await callP(sql3, params.s, res)
+  let t = clone(await callP(sql4, params.c, res))
+  let ret = { g: t[0],m: t[1],s: t[2],c: t[3] }
+  res.end(JSON.stringify(ret))
+})
+
+router.post('/delCase', async function (req, res) {
+  let params = { id: req.body.id }
+  let sql  = `CALL PROC_CL_DEL_CASE(?)`
+  let r = await callP(sql, params, res)
+  res.status(200).json({ code: 200, data: r})
+})
+
 
 router.post('/saveOrder', async function (req, res) {
   let params = {
@@ -189,9 +253,32 @@ router.post('/listShoppingGoods', async function (req, res) {
   res.status(200).json({ code: 200, data: r})
 })
 
+// function toBase64(arr) {
+//    return btoa(
+//       arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
+//    );
+// }
 
+// router.get('/aaa', function (req, res) {
+//   let _res    = res;
+//   let url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appid}&secret=${appsecret}`
 
+//   request({ url: url, method: 'GET' },  async (err, r, body) => {
+//     let ak = JSON.parse(body).access_token
+//     let url_code = `https://api.weixin.qq.com/wxa/getwxacode?access_token=${ak}`
+//     let params = { method: 'POST', data: { access_token: ak, scene: 'abc&cde' } }
+//     let {status, data} = await urllib.request(url_code, params)
+//     if (status !== 200) throw new Error('request fail')
+//     // let img = `data:image/png;base64,${data}`
+//     console.log(data)
 
+//     // const buffer = fs.readFileSync("image.jpg");
+//     fs.writeFileSync("image.jpg", data);
+
+//     res.status(200).json({ code: 200, img:data})
+    
+//   })
+// })
 
 
 

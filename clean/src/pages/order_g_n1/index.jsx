@@ -30,6 +30,8 @@ class Index extends Component {
     switch(this.state.type) {
       case 'g':Taro.setNavigationBarTitle({title:'国标治理'});break;
       case 'm':Taro.setNavigationBarTitle({title:'母婴治理'});break;
+      case 's':Taro.setNavigationBarTitle({title:'溯源检测'});break;
+      case 'c':Taro.setNavigationBarTitle({title:'CMA检测'});break;
     }
     
   }

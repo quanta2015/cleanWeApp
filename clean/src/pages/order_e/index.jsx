@@ -121,9 +121,7 @@ class Index extends Component {
               <Text className="m-unit">元</Text>
             </View>
           </View>
-          <View className="m-wrap">
-            <Text className="m-info">(预计使用甲醛净、除味剂产品的价格)</Text>
-          </View>
+          
         </View>}
 
         {(area!==0) &&

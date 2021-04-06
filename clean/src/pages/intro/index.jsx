@@ -9,6 +9,13 @@ import {API_SERVER} from '../../constant/apis'
 @observer
 class Intro extends Component {
 
+  onShareAppMessage (res) {
+    return { title: '艾尔森除醛', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
+  }
+  onShareTimeline () {
+    return {}
+  }
+
   render () {
     return (
       <View className='g-intro'>

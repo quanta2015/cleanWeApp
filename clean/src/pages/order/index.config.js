@@ -1,3 +1,4 @@
 export default {
-  navigationBarTitleText: '预约服务'
+  navigationBarTitleText: '预约服务',
+  enableShareTimeline: true,
 }

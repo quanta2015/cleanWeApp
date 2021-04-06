@@ -7,8 +7,8 @@ import shopStore from './store/shop'
 import 'taro-ui/dist/style/index.scss'
 import './app.less'
 import dayjs from 'dayjs'
-// import req from './utils/request'
-// import * as urls from './constant/apis'
+import req from './utils/request'
+import * as urls from './constant/apis'
 
 
 const store = {
@@ -25,12 +25,11 @@ class App extends Component {
   }
 
   async componentDidMount () {
-    // Taro.showLoading({ title:'loading', mask:true })
-    // const res = await req.post(urls.GET_APP_DB)
-    // console.log(res.data)
-    // mainStore.setDb(res.data)
-    // Taro.hideLoading()
-    
+    Taro.showLoading({ title:'loading', mask:true })
+    const res = await req.post(urls.GET_APP_DB)
+    console.log(res.data)
+    mainStore.setDb(res.data)
+    Taro.hideLoading()
   }
 
 

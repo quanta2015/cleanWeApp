@@ -31,7 +31,7 @@ class Index extends Component {
   async componentDidMount() {
     Taro.showLoading({ title:'loading', mask:true })
     let r = await this.props.store.mainStore.listOrder()
-    // console.log(r)
+    console.log(r)
     this.setState({ list: r})
     Taro.hideLoading()
   }

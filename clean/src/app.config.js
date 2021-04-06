@@ -20,6 +20,7 @@ export default {
     'pages/launch/index', 
     'pages/his_order/index',
     'pages/his_shopping/index',
+    'pages/code/index',
     
   ],
   tabBar: {

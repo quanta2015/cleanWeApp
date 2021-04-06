@@ -6,6 +6,7 @@ import './index.less'
 import icon_arrow from '../../static/ico_right.png' 
 import icon_goods from '../../static/ico_goods.png' 
 import icon_order from '../../static/ico_order.png' 
+import icon_we from '../../static/ico_we.png' 
 
 
 var USER_NAME = '请登录'
@@ -25,10 +26,19 @@ class User extends Component {
     }
   }
 
+  onShareAppMessage (res) {
+    return { title: '艾尔森除醛', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
+  }
+  onShareTimeline () {
+    return {}
+  }
+  
+
   componentDidShow() {
     let u = Taro.getStorageSync('user')
     let user = (u)?JSON.parse(u):null
     if (user!==null) {
+      console.log(user)
       this.setState({ user:user.name, logo: user.img})
     }
   }
@@ -49,6 +59,9 @@ class User extends Component {
   doShowGoods=()=>{
     Taro.navigateTo({ url: `/pages/his_shopping/index` })
   }
+  doShowCode=()=>{
+    Taro.navigateTo({ url: `/pages/code/index` })
+  }
 
 
   render () {
@@ -67,6 +80,7 @@ class User extends Component {
           </View>}
         </View>
         <View className="m-sect">
+          { (this.state.user!==USER_NAME) &&
           <View className="m-row" onClick={this.doShowOrder}>
             <View className="m-icon">
               <Image src={icon_order}></Image>
@@ -75,12 +89,24 @@ class User extends Component {
             <View className="m-arrow">
               <Image src={icon_arrow}></Image>
             </View>
-          </View> 
+          </View> }
+
+          { (this.state.user!==USER_NAME) &&
           <View className="m-row" onClick={this.doShowGoods}>
             <View className="m-icon">
               <Image src={icon_goods}></Image>
             </View>
             <Text className="m-txt">历史购物</Text>
+            <View className="m-arrow">
+              <Image src={icon_arrow}></Image>
+            </View>
+          </View> }
+
+          <View className="m-row" onClick={this.doShowCode}>
+            <View className="m-icon">
+              <Image src={icon_we}></Image>
+            </View>
+            <Text className="m-txt">分享除醛</Text>
             <View className="m-arrow">
               <Image src={icon_arrow}></Image>
             </View>
