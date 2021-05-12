@@ -72,6 +72,9 @@ class Case extends React.Component {
   doName = (e) => {
     this.setState({cname: e.currentTarget.value})
   }
+  doDelImg=()=>{
+    this.setState({cimg:null})
+  }
 
   importPhoto = async (e)=>{
     if (e.target.files.length > 0) {
@@ -97,7 +100,7 @@ class Case extends React.Component {
     let {listpage,list,visible,cimg,cname} = this.state
 		return (
       <Spin spinning={this.state.loading}>
-  			<div className="g-home">
+  			<div className="g-case">
           <div className="m-tl" >
             <span>除醛服务</span>
           </div>
@@ -127,15 +130,21 @@ class Case extends React.Component {
           visible={visible}
           className="m-form"
         >
-          <div className="m-ipt"><Input placeholder="请输入案例名称" onChange={this.doName}></Input></div>
+          <div className="m-ipt">
+            <span>案例名称</span>
+            <Input placeholder="请输入案例名称" onChange={this.doName}/>
+          </div>
           
           {(cimg===null) &&
-          <div className="m-ipt">
+          <div className="m-ipt m-ipti">
+            <span>案例图片</span>
             <div className="m-up">+</div>
             <input type="file" accept="image/*;"  onChange={this.importPhoto} />
           </div>}
           {(cimg!==null) &&
-          <div className="m-ipt">
+          <div className="m-ipt m-ipti">
+            <div className="m-del" onClick={this.doDelImg}></div>
+            <span>案例图片</span>
             <img src={`${API_SERVER}/${cimg}`} alt=""/>
           </div>}
           

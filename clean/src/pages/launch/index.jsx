@@ -28,7 +28,7 @@ class Case extends Component {
             </View>
             
           </View> 
-          <Button className="m-btn m-login" open-type='getUserInfo' onGetUserInfo={this.bindUserInfo} >微信帐号快捷登录</Button>
+          <Button className="m-btn m-login"  onClick={()=>this.bindUserInfo()} >微信帐号快捷登录</Button>
           <Button className="m-btn">暂不登录</Button>
         </View> 
         <View className="m-ft">

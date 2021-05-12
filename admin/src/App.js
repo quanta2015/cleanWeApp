@@ -19,7 +19,7 @@ class App extends React.Component {
 						<div className='app-root'>
 							<NavWrapper>
 								<Switch>
-									<Route exact path='/' component={Loadable({ loader: () => import('./app/case')})}  />
+									<Route exact path='/' 		component={Loadable({ loader: () => import('./app/case')})}  />
                   <Route exact path='/home' component={Loadable({ loader: () => import('./app/home')})}  />
                   <Route exact path='/good' component={Loadable({ loader: () => import('./app/good')})}  />
                   

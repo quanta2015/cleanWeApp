@@ -46,10 +46,19 @@ class mainStore {
   // 微信取用户信息
   userInfo = async () => {
     return new Promise ( resolve => {
-      Taro.getUserInfo({
-        success: res => { resolve(res.userInfo) },
+      // Taro.getUserInfo({
+      //   success: res => { resolve(res.userInfo) },
+      //   fail:    err => { console.log(err) }
+      // })
+     
+     
+      wx.getUserProfile({
+        desc: "get user info",
+        success: res => { console.log(res.userInfo); resolve(res.userInfo) },
         fail:    err => { console.log(err) }
       })
+      
+
     })
   }
   
@@ -157,23 +166,30 @@ class mainStore {
 
 
   // 用微信帐号登录并保存到缓存
-  bindUserInfo = async () => {
-    let r1 = await this.weLogin()
-    console.log(`code: ${r1}`)
-    let r2 = await req.post(urls.URL_JSCODE2SESSION, {code:r1})
-    console.log(`openid: ${r2.data.openid}`)
-    let r3 = await this.userInfo()
-    console.log(r3)
-    let user = {
-      code:   r1,
-      openid: r2.data.openid,
-      name:   r3.nickName,
-      city:   r3.city,
-      prov:   r3.province,
-      img:    r3.avatarUrl
-    }
-    Taro.setStorageSync('user',JSON.stringify(user))
-    Taro.switchTab({ url: `/pages/user/index` })
+  bindUserInfo = () => {
+    wx.getUserProfile({
+      desc: "get user info",
+      fail:    err => { console.log(err) },
+      success: async(res) => { 
+        console.log(res.userInfo)
+        let r3 = res.userInfo
+        let r1 = await this.weLogin()
+        console.log(`code: ${r1}`)
+        let r2 = await req.post(urls.URL_JSCODE2SESSION, {code:r1})
+        console.log(`openid: ${r2.data.openid}`)
+
+        let user = {
+          code:   r1,
+          openid: r2.data.openid,
+          name:   r3.nickName,
+          city:   r3.city,
+          prov:   r3.province,
+          img:    r3.avatarUrl
+        }
+        Taro.setStorageSync('user',JSON.stringify(user))
+        Taro.switchTab({ url: `/pages/user/index` })
+      }
+    })
   }
 
   // 用户历史订单

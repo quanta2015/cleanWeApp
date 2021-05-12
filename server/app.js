@@ -24,6 +24,7 @@ app.set('view engine', 'jade');
 
 
 app.use(express.static(__dirname + '/'));
+app.use(express.static(__dirname + '/admin'));
 app.use('/', router)
 
 // 错误处理

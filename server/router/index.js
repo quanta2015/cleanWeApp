@@ -3,10 +3,14 @@ var express = require('express')
 var router = express.Router()
 var request = require('request')
 var urllib = require('urllib')
+var jwt = require('jsonwebtoken')
+var formidable = require('formidable')
+var dayjs = require('dayjs')
 var db = require("../db/db")
 
-var d = require("../data/data")
 var wxpay  = require('../utils/wepay')
+var d = require("../data/data")
+
 
 const appid           = 'wxf121d862d28158fd'
 const appsecret       = '6eabc7171775b5b3870b7215ccee8571'
@@ -122,6 +126,7 @@ router.post('/wxpay', async function (req, res) {
 
 // -- business logic -----------------
 
+const SECRET_KEY = 'CLEAN_TOKEN'
 
 router.post('/login',async (req, res, next) =>{
   let params = req.body
@@ -149,14 +154,16 @@ router.post('/getCount', async function (req, res) {
 router.post('/getAppDB', async (req, res) =>{
   let sql1  = `CALL PROC_CL_LIST_CASE(?)`
   let sql2  = `CALL PROC_CL_LIST_PARAMS(?)`
+  let sql3  = `CALL PROC_CL_LIST_GOODS(?)`
   let r = clone(await callP(sql1, null, res))
   let q = clone(await callP(sql2, null, res))
+  let p = clone(await callP(sql3, null, res))
   q.forEach((item,i)=>{
     for(var attr in item) {
       q[i][attr] = ((attr!=='type')&&(attr!=='id'))?parseFloat(q[i][attr]):q[i][attr]
     }
   })
-  const DATA = { g:q[0],m:q[1],s:q[2],c:q[3],case:r,city: d.CITY,fn:d.FN }
+  const DATA = { g:q[0],m:q[1],s:q[2],c:q[3],case:r,goods:p,city: d.CITY,fn:d.FN }
   res.end(JSON.stringify(DATA))
 })
 
@@ -177,9 +184,56 @@ router.post('/saveParams', async (req, res) =>{
 
 router.post('/delCase', async function (req, res) {
   let params = { id: req.body.id }
-  let sql  = `CALL PROC_CL_DEL_CASE(?)`
+  let sql  = `CALL PROC_CL_CASE_DEL(?)`
   let r = await callP(sql, params, res)
   res.status(200).json({ code: 200, data: r})
+})
+
+
+router.post('/addCase', async function (req, res) {
+  let params = { name: req.body.name, img: req.body.img }
+  let sql  = `CALL PROC_CL_CASE_ADD(?)`
+  let r = await callP(sql, params, res)
+  res.status(200).json({ code: 200, data: r})
+})
+
+router.post('/delGood', async function (req, res) {
+  let params = { id: req.body.id }
+  let sql  = `CALL PROC_CL_GOOD_DEL(?)`
+  let r = await callP(sql, params, res)
+  res.status(200).json({ code: 200, data: r})
+})
+
+
+router.post('/addGood', async function (req, res) {
+  let params = { name:  req.body.name, 
+                 unit:  req.body.unit,
+                 spec:  req.body.spec,
+                 price: req.body.price,
+                 img_h1:req.body.img_h1,
+                 img_h2:req.body.img_h2,
+                 img_bd:req.body.img_bd }
+  let sql  = `CALL PROC_CL_GOOD_ADD(?)`
+  let r = await callP(sql, params, res)
+  res.status(200).json({ code: 200, data: r})
+})
+
+
+router.post('/upload', function (req, res) {
+  const form = new formidable.IncomingForm()
+  form.parse(req)
+  form.on('fileBegin', function (name, file) {
+    let type = file.name
+    file.path = `cdn/${type}/${type}_${dayjs().format('YYYYMMDDhhmmssSSS')}.jpeg`
+  })
+
+  form.on('file', (name, file) => {
+    res.status(200).json({
+      code: 200,
+      msg: '上传照片成功',
+      data: {path: file.path}
+    })
+  })
 })
 
 

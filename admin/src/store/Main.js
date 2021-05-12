@@ -30,6 +30,16 @@ class Main extends BaseActions {
   }
 
   @action
+  async delGood(params) {
+    return await this.post(urls.API_DEL_GOOD,params)
+  }
+
+  @action
+  async addGood(params) {
+    return await this.post(urls.API_ADD_GOOD,params)
+  }
+
+  @action
   async upload(params) {
     return await this.post(urls.API_UPLOAD,params)
   }

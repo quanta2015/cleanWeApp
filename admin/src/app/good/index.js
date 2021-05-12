@@ -21,8 +21,13 @@ class Good extends React.Component {
       list: [],
       listpage: [],
       visible: false,
-      cimg: null,
-      cname:null,
+      cimg_h1: null,
+      cimg_h2: null,
+      cimg_bd: null,
+      cname:'',
+      cunit:'',
+      cspec:'',
+      cprice:'',
     }
   }
 
@@ -46,18 +51,30 @@ class Good extends React.Component {
     let {cur} = this.state
     let params = { id:id}
     this.setState({ loading: true })
-    let r = await this.props.mainStore.delCase(params)
+    let r = await this.props.mainStore.delGood(params)
     this.setState({loading: false, list: r.data, listpage:getListByPage(r.data,cur) })
     message.info('删除案例成功！')
   }
 
   doAdd=async ()=>{
-    let {cur,cname,cimg} = this.state
-    if ((cname.trim()!=='')&&(cname!==null)&&(cimg!==null)) {
-      let parmas = { name:cname, img:cimg }
+    let {cur,cname,cunit,cspec,cprice,cimg_h1,cimg_h2,cimg_bd} = this.state
+    if ((cname.trim()!=='')&&(cunit.trim()!=='')&&(cspec.trim()!=='')&&(cprice.trim()!=='')&&(cimg_h1!==null)&&(cimg_h2!==null)&&(cimg_bd!==null)) {
+      let parmas = { name:cname, unit:cunit, spec:cspec, price:cprice, img_h1:cimg_h1, img_h2:cimg_h2, img_bd:cimg_bd }
       this.setState({ loading: true })
-      let r = await this.props.mainStore.addCase(parmas)
-      this.setState({loading: false, visible:false, list: r.data, listpage:getListByPage(r.data,cur) })
+      let r = await this.props.mainStore.addGood(parmas)
+      this.setState({
+        loading: false, 
+        visible:false, 
+        list: r.data, 
+        listpage:getListByPage(r.data,cur),
+        cimg_h1: null,
+        cimg_h2: null,
+        cimg_bd: null,
+        cname:'',
+        cunit:'',
+        cspec:'',
+        cprice:'',
+      })
       message.info('添加案例成功！')
     }else{
       message.info('请输入案例名称并且上传图片！')
@@ -70,11 +87,16 @@ class Good extends React.Component {
   onShow = () => {
     this.setState({visible:true})
   }
-  doName = (e) => {
-    this.setState({cname: e.currentTarget.value})
+  doInput = (i,e) => {
+    switch(i) {
+      case 1: this.setState({cname: e.currentTarget.value});break;
+      case 2: this.setState({cunit: e.currentTarget.value});break;
+      case 3: this.setState({cspec: e.currentTarget.value});break;
+      case 4: this.setState({cprice: e.currentTarget.value});break;
+    }
   }
 
-  importPhoto = async (e)=>{
+  importPhoto = async (i,e)=>{
     if (e.target.files.length > 0) {
       let file = e.target.files[0]
       let blob = await fileToBlob(file,400,300)
@@ -84,7 +106,11 @@ class Good extends React.Component {
       this.setState({ loading: true })
       let r = await this.props.mainStore.upload(formData)
       if (r.code === 200) {
-        this.setState({ loading: false, cimg: r.data.path })
+        switch(i) {
+          case 1:this.setState({ loading: false, cimg_h1: r.data.path });break;
+          case 2:this.setState({ loading: false, cimg_h2: r.data.path });break;
+          case 3:this.setState({ loading: false, cimg_bd: r.data.path });break;
+        }
         message.info('上传图片成功')
       } else {
         message.error(r.msg)
@@ -93,12 +119,21 @@ class Good extends React.Component {
     }
   }
 
+  doDelImg=(i)=>{
+    switch(i) {
+      case 1:this.setState({cimg_h1:null});break;
+      case 2:this.setState({cimg_h2:null});break;
+      case 3:this.setState({cimg_bd:null});break;
+    }
+  }
+
   
   render() {
-    let {listpage,list,visible,cimg,cname} = this.state
+    // console.log(this.state)
+    let {listpage,list,visible,cimg_h1,cimg_h2,cimg_bd,cname} = this.state
     return (
       <Spin spinning={this.state.loading}>
-        <div className="g-home">
+        <div className="g-good">
           <div className="m-tl" >
             <span>除醛服务</span>
           </div>
@@ -122,34 +157,71 @@ class Good extends React.Component {
         <Drawer
           title="添加产品"
           placement="right"
-          width={300}
+          width={320}
           closable={false}
           onClose={this.onClose}
           visible={visible}
-          className="m-form"
+          className="m-form-good"
         >
           <div className="m-ipt">
-            <Input placeholder="请输入名称" onChange={this.doName}></Input>
+
+            <span>产品名称</span>
+            <Input placeholder="请输入名称" onChange={this.doInput.bind(this,1)}></Input>
           </div>
           <div className="m-ipt">
-            <Input placeholder="请输入单位(unit)" onChange={this.doName}></Input>
+            <span>产品单位</span>
+            <Input placeholder="请输入单位(unit)" onChange={this.doInput.bind(this,2)}></Input>
           </div>
           <div className="m-ipt">
-            <Input placeholder="请输入属性(spec)" onChange={this.doName}></Input>
+            <span>产品属性</span>
+            <Input placeholder="请输入属性(spec)" onChange={this.doInput.bind(this,3)}></Input>
           </div>
           <div className="m-ipt">
-            <Input placeholder="请输入价格(price)" onChange={this.doName}></Input>
+            <span>产品价格</span>
+            <Input placeholder="请输入价格(price)" onChange={this.doInput.bind(this,4)}></Input>
+          </div>
+
+          <div className="m-wrap">
+            {(cimg_h1===null) &&
+            <div className="m-ipt m-ipti">
+              <span>产品主图</span>
+              <div className="m-up">+</div>
+              <input type="file" accept="image/*;"  onChange={this.importPhoto.bind(this,1)} />
+            </div>}
+            {(cimg_h1!==null) &&
+            <div className="m-ipt m-ipti">
+              <div className="m-del" onClick={this.doDelImg.bind(this,1)}></div>
+              <span>产品主图</span>
+              <img src={`${API_SERVER}/${cimg_h1}`} alt=""/>
+            </div>}
+
+            {(cimg_h2===null) &&
+            <div className="m-ipt m-ipti">
+              <span>产品副图</span>
+              <div className="m-up">+</div>
+              <input type="file" accept="image/*;"  onChange={this.importPhoto.bind(this,2)} />
+            </div>}
+            {(cimg_h2!==null) &&
+            <div className="m-ipt m-ipti">
+              <div className="m-del" onClick={this.doDelImg.bind(this,2)}></div>
+              <span>产品副图</span>
+              <img src={`${API_SERVER}/${cimg_h2}`} alt=""/>
+            </div>}
           </div>
           
-          {(cimg===null) &&
-          <div className="m-ipt">
+          {(cimg_bd===null) &&
+          <div className="m-ipt m-ipti">
+            <span>产品描述图</span>
             <div className="m-up">+</div>
-            <input type="file" accept="image/*;"  onChange={this.importPhoto} />
+            <input type="file" accept="image/*;"  onChange={this.importPhoto.bind(this,3)} />
           </div>}
-          {(cimg!==null) &&
-          <div className="m-ipt">
-            <img src={`${API_SERVER}/${cimg}`} alt=""/>
+          {(cimg_bd!==null) &&
+          <div className="m-ipt m-ipti">
+            <div className="m-del" onClick={this.doDelImg.bind(this,3)}></div>
+            <span>产品描述图</span>
+            <img src={`${API_SERVER}/${cimg_bd}`} alt=""/>
           </div>}
+          
           
 
           <div className="m-ipt">

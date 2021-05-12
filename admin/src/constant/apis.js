@@ -8,4 +8,5 @@ export const API_SAVE_PARAMS = API_SERVER + '/saveParams'
 export const API_DEL_CASE    = API_SERVER + '/delCase'
 export const API_ADD_CASE    = API_SERVER + '/addCase'
 export const API_UPLOAD      = API_SERVER + '/upload'
-
+export const API_DEL_GOOD    = API_SERVER + '/delGood'
+export const API_ADD_GOOD    = API_SERVER + '/addGood'

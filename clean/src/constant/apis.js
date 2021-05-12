@@ -1,5 +1,6 @@
 // export const API_SERVER           = 'https://mooc.hznu.edu.cn'
-export const API_SERVER           = 'https://qmca.xyz'     
+// export const API_SERVER           = 'https://qmca.xyz'     
+export const API_SERVER           = 'https://zjairsen.top'     
 
 
 
