@@ -96,11 +96,11 @@ class Case extends React.Component {
   }
 
   
-	render() {
+  render() {
     let {listpage,list,visible,cimg,cname} = this.state
-		return (
+    return (
       <Spin spinning={this.state.loading}>
-  			<div className="g-case">
+        <div className="g-case">
           <div className="m-tl" >
             <span>除醛服务</span>
           </div>
@@ -157,8 +157,8 @@ class Case extends React.Component {
           </div>  
         </Drawer>
       </Spin>
-		)
-	}
+    )
+  }
 }
 
 export default Case

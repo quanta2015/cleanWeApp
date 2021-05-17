@@ -1,5 +1,5 @@
 const conf = {
-  host: 'localhost',
+  host: '121.40.235.48',
   port: 3306,
   database: 'clean',
   user:     'clean',

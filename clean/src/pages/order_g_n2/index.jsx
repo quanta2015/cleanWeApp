@@ -41,6 +41,7 @@ class Index extends Component {
     let { mainStore } = this.props.store
     let money = parseFloat(mainStore.getAllPrice()).toFixed(2)
     // let money = (mainStore.getAllPrice()/100000).toFixed(2)
+    // let money = 0.01
     mainStore.pay(money, this.state.type)
   }
 

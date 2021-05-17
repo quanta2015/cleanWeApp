@@ -1,24 +1,36 @@
-const fs = require("fs")
-var express = require('express')
-var router = express.Router()
-var request = require('request')
-var urllib = require('urllib')
-var jwt = require('jsonwebtoken')
-var formidable = require('formidable')
+var fs = require("fs")
+var path = require('path')
 var dayjs = require('dayjs')
+var urllib = require('urllib')
+var express = require('express')
+var request = require('request')
+var jwt = require('jsonwebtoken')
+var PdfPrinter = require('pdfmake')
+var formidable = require('formidable')
+var router = express.Router()
+var tmplOrder   = require("../utils/tmplOrder")
+var tmplOrderHead   = require("../utils/tmplOrderHead")
+var tmplShopping= require("../utils/tmplShopping")
+var d  = require("../data/data")
 var db = require("../db/db")
-
 var wxpay  = require('../utils/wepay')
-var d = require("../data/data")
+
+
+var __dirproj = path.resolve(__dirname,'../')
+var fonts = { 
+  fzlt: { 
+    normal:__dirproj+'/cdn/fonts/fzlt.ttf', 
+    bold:__dirproj+'/cdn/fonts/fzlt.ttf' 
+  }
+}
+var printer = new PdfPrinter(fonts)
 
 
 const appid           = 'wxf121d862d28158fd'
 const appsecret       = '6eabc7171775b5b3870b7215ccee8571'
 const mchid           = '1487384612'
 const mchkey          = 'hCU9nk2O7JwELi4gq0cWB4HmocJdh3qI'
-
-// const notify_url      = 'https://mooc.hznu.edu.cn/'
-const notify_url      = 'https://qmca.xyz/'
+const notify_url      = 'https://zjairsen.top/'
 const URL_UNIFIDORDER = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
 const URL_SESSION     = (code)=>{ return `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appsecret}&js_code=${code}&grant_type=authorization_code` }
 
@@ -245,9 +257,14 @@ router.post('/saveOrder', async function (req, res) {
     orderid:  req.body.date,
     area:     req.body.area,  
     poi:      req.body.poi, 
-    selTech:  req.body.selTech,
+    selTech:  req.body.selTech||0,
+    name:     req.body.name,
+    phone:    req.body.phone,
+    addr:     req.body.addr,
+    seldate:  req.body.seldate,
     selSafe:  (req.body.selSafe)?1:0,
   }
+
   let sql  = `CALL PROC_CL_SAVE_ORDER(?)`
   let r = await callP(sql, params, res)
   res.status(200).json({ code: 200, data: r})
@@ -260,11 +277,83 @@ router.post('/listOrder', async function (req, res) {
   res.status(200).json({ code: 200, data: r})
 })
 
+router.post('/listOrderAll', async function (req, res) {
+  let sql  = `CALL PROC_CL_LIST_ORDER_ALL()`
+  let r = await callP(sql, null, res)
+  res.status(200).json({ code: 200, data: r})
+})
+
+
+router.post('/listOrderQry', async function (req, res) {
+  let params = req.body
+  let sql  = `CALL PROC_CL_LIST_ORDER_QUERY(?)`
+  let r = await callP(sql, params, res)
+  res.status(200).json({ code: 200, data: r})
+})
+
+
+router.get('/listOrderAlltoPdf', async function (req, res) {
+  let sql  = `CALL PROC_CL_LIST_ORDER_ALL()`
+  let r = await callP(sql, null, res)
+  tmplOrder.content[2].table.body = []
+  tmplOrder.content[2].table.body.push(tmplOrderHead)
+  r.map((item,i)=>{
+    let row = []
+    row.push(item.oid)
+    row.push(item.seldate)
+    row.push(item.name   )
+    row.push(item.phone  )
+    row.push(item.addr   )
+    row.push(item.tp     )
+    row.push(item.area   )
+    row.push(item.seltech)
+    row.push(item.selsafe)
+    row.push(item.money  )
+    tmplOrder.content[2].table.body.push(row)
+  })
+
+  let pdfDoc = printer.createPdfKitDocument(tmplOrder);
+  let pdfPath = `export/order_${dayjs().format('YYYYMMDDhhmmssSSS')}.pdf`
+  pdfDoc.pipe(fs.createWriteStream(pdfPath));
+  pdfDoc.end();
+  res.status(200).json({ code: 200, pdf: pdfPath})
+})
+
+
+router.get('/listOrderAllToXls', async function (req, res) {
+  let sql  = `CALL PROC_CL_LIST_ORDER_ALL()`
+  let r = await callP(sql, null, res)
+
+  let filePath = `export/order_${dayjs().format('YYYYMMDDhhmmssSSS')}.xls`
+  var writeStream = fs.createWriteStream(filePath)
+
+  var header=`${['单号','预约日期','客户名称','联系方式','服务地址','服务类型','房屋面积','工程师类型','是否保险','服务费用'].join('\t')}\n`
+  writeStream.write(header)
+  r.map((item,i)=>{
+    let row = []
+    row.push(item.oid)
+    row.push(item.seldate)
+    row.push(item.name   )
+    row.push(item.phone  )
+    row.push(item.addr   )
+    row.push(item.tp     )
+    row.push(item.area   )
+    row.push(item.seltech)
+    row.push(item.selsafe)
+    row.push(item.money  )
+    row = `${row.join('\t')}\n`
+    writeStream.write(row)
+  })
+  writeStream.close()
+  res.status(200).json({ code: 200, xls: filePath})
+})
+
 router.post('/listGoods', async function (req, res) {
   let sql  = `CALL PROC_CL_LIST_GOODS(?)`
   let r = await callP(sql, null, res)
   res.status(200).json({ code: 200, data: r})
 })
+
 
 const toList = (d)=>{
   d = d.split('|')
@@ -307,34 +396,96 @@ router.post('/listShoppingGoods', async function (req, res) {
   res.status(200).json({ code: 200, data: r})
 })
 
-// function toBase64(arr) {
-//    return btoa(
-//       arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
-//    );
-// }
 
-// router.get('/aaa', function (req, res) {
-//   let _res    = res;
-//   let url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appid}&secret=${appsecret}`
-
-//   request({ url: url, method: 'GET' },  async (err, r, body) => {
-//     let ak = JSON.parse(body).access_token
-//     let url_code = `https://api.weixin.qq.com/wxa/getwxacode?access_token=${ak}`
-//     let params = { method: 'POST', data: { access_token: ak, scene: 'abc&cde' } }
-//     let {status, data} = await urllib.request(url_code, params)
-//     if (status !== 200) throw new Error('request fail')
-//     // let img = `data:image/png;base64,${data}`
-//     console.log(data)
-
-//     // const buffer = fs.readFileSync("image.jpg");
-//     fs.writeFileSync("image.jpg", data);
-
-//     res.status(200).json({ code: 200, img:data})
-    
-//   })
-// })
+router.post('/listShoppingGoodsAll', async function (req, res) {
+  let sql1  = `CALL PROC_CL_LIST_SP_GOODS_ALL()`
+  let sql2  = `CALL PROC_CL_LIST_GOODS(?)`
+  let r = await callP(sql1, null, res)
+  let q = await callP(sql2, {}, res)
+  q.map((item,i,arr)=>{ arr[i]= {na:item.name,pr:item.price} })
+  r.forEach((item,i,arr)=>{ arr[i].buyList = toListN(item.buyList,q) })
+  res.status(200).json({ code: 200, data: r})
+})
 
 
+router.get('/listShoppingGoodsAlltoPdf', async function (req, res) {
+  let tmpl = clone(tmplShopping)
+  let sql1  = `CALL PROC_CL_LIST_SP_GOODS_ALL()`
+  let sql2  = `CALL PROC_CL_LIST_GOODS(?)`
+  let r = await callP(sql1, null, res)
+  let q = await callP(sql2, {}, res)  
+  q.map((item,i,arr)=>{ arr[i]= {na:item.name,pr:parseFloat(item.price).toFixed(2)} })
+  r.forEach((item,i,arr)=>{ arr[i].buyList = toListN(item.buyList,q) })
+  
+  r.map((item,i)=>{
+    let row = []
+    row.push(i+1)
+    row.push(item.date   )
+    row.push(item.name   )
+    row.push(item.phone  )
+    row.push(item.addr   )
+    row.push(parseFloat(item.sumPrice).toFixed(2))
+    tmpl.content[2].table.body.push(row)
+
+    item.buyList.map((o,j)=>{
+      let srow = []
+      srow.push('        ')
+      srow.push('        ')
+      srow.push(j+1)
+      srow.push(o.na)
+      srow.push(o.ct)
+      srow.push(o.pr)
+      tmpl.content[2].table.body.push(srow)
+    })
+  })
+
+  let pdfDoc = printer.createPdfKitDocument(tmpl);
+  let pdfPath = `export/shopping_${dayjs().format('YYYYMMDDhhmmssSSS')}.pdf`
+  pdfDoc.pipe(fs.createWriteStream(pdfPath));
+  pdfDoc.end();
+  res.status(200).json({ code: 200, pdf: pdfPath})
+})
+
+
+router.get('/listShoppingGoodsAllToXls', async function (req, res) {
+  let sql1  = `CALL PROC_CL_LIST_SP_GOODS_ALL()`
+  let sql2  = `CALL PROC_CL_LIST_GOODS(?)`
+  let r = await callP(sql1, null, res)
+  let q = await callP(sql2, {}, res)  
+  q.map((item,i,arr)=>{ arr[i]= {na:item.name,pr:parseFloat(item.price).toFixed(2)} })
+  r.forEach((item,i,arr)=>{ arr[i].buyList = toListN(item.buyList,q) })
+
+  let filePath = `export/shopping_${dayjs().format('YYYYMMDDhhmmssSSS')}.xls`
+  var writeStream = fs.createWriteStream(filePath)
+
+  var header=`${['序号','购买日期','客户名称','联系方式','地址','总金额'].join('\t')}\n`
+  writeStream.write(header)
+  r.map((item,i)=>{
+    let row = []
+    row.push(item.oid)
+    row.push(item.date   )
+    row.push(item.name   )
+    row.push(item.phone  )
+    row.push(item.addr   )
+    row.push(parseFloat(item.sumPrice).toFixed(2))
+    row = `${row.join('\t')}\n`
+    writeStream.write(row)
+
+    item.buyList.map((o,j)=>{
+      let srow = []
+      srow.push('        ')
+      srow.push('        ')
+      srow.push(j+1)
+      srow.push(o.na)
+      srow.push(o.ct)
+      srow.push(o.pr)
+      srow = `${srow.join('\t')}\n`
+      writeStream.write(srow)
+    })
+  })
+  writeStream.close()
+  res.status(200).json({ code: 200, xls: filePath})
+})
 
 
 

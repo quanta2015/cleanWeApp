@@ -22,6 +22,8 @@ class App extends React.Component {
 									<Route exact path='/' 		component={Loadable({ loader: () => import('./app/case')})}  />
                   <Route exact path='/home' component={Loadable({ loader: () => import('./app/home')})}  />
                   <Route exact path='/good' component={Loadable({ loader: () => import('./app/good')})}  />
+                  <Route exact path='/serv' component={Loadable({ loader: () => import('./app/serv')})}  />
+                  <Route exact path='/sell' component={Loadable({ loader: () => import('./app/sell')})}  />
                   
                 </Switch>
 							</NavWrapper>

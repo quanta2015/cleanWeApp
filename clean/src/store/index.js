@@ -12,13 +12,18 @@ const json2Form = (json, str=[]) => {
 }
 
 class mainStore {
-  openid = null;
-  area = 0;
-  poi = 0;
-  selTech = null;
-  selSafe = null;
+  openid   = null;
+  area     = 0;
+  poi      = 0;
+  selTech  = null;
+  selSafe  = null;
   allPrice = 0;
-  db = null;
+  db       = null;
+  name     = null;
+  phone    = null;
+  addr     = null;
+  seldate  = null;
+
 
   setArea(area) { this.area = area }
   getArea()     { return this.area }
@@ -31,6 +36,10 @@ class mainStore {
   setAllPrice(allPrice) { this.allPrice = allPrice }
   getAllPrice()  { return this.allPrice }
   setDb(db) {this.db = db}
+  setName(name) { this.name = name }
+  setPhone(phone) { this.phone = phone }
+  setAddr(addr) { this.addr = addr }
+  setSelDate(seldate) { this.seldate = seldate }
 
   
   // 微信用户登录取 code
@@ -125,6 +134,10 @@ class mainStore {
       poi:     this.poi,
       selTech: this.selTech,
       selSafe: this.selSafe,
+      name:    this.name,
+      phone:   this.phone,
+      addr:    this.addr,
+      seldate: this.seldate,
       date: dayjs().format('YYYYMMDDhhmmssSSS'),
     }
     let r5 = await this.saveOrder(data)
@@ -132,37 +145,37 @@ class mainStore {
     Taro.navigateTo({ url: `/pages/info_ret/index` })
   }
 
-    // 购物支付入口
-    payGoods = async (params) => {
-      let code = await this.weLogin()
-      console.log(`code: ${code}`)
-      let r2 = await req.post(urls.URL_JSCODE2SESSION, { code: code })
-      let openid = r2.data.openid
-      console.log(`openid: ${openid}`)
-      let r3 = await this.wxApi(openid, params.sumPrice)
-      console.log(r3)
-      let r4 = await this.payment(r3)
-      console.log(r4)
-      let data={...params, uid:openid,}
-       return await new Promise((resolve, reject) => {
-        Taro.request({
-          method: 'post',
-          url: urls.URL_SAVE_SP_GOODS,
-          data:  data ,
-          success: res => {
-            console.log(res);
-            resolve(res),
-            Taro.showToast({ title: '支付成功', icon: 'success', mask: true }),
-            Taro.navigateTo({ url: `/pages/info_ret/index` })
-          },
-          fail: err => {
-            reject(err)
-            console.log(err);
-            Taro.showToast({ title: '支付数据保存失败', icon: 'none', mask: true })
-          }
-        })
+  // 购物支付入口
+  payGoods = async (params) => {
+    let code = await this.weLogin()
+    console.log(`code: ${code}`)
+    let r2 = await req.post(urls.URL_JSCODE2SESSION, { code: code })
+    let openid = r2.data.openid
+    console.log(`openid: ${openid}`)
+    let r3 = await this.wxApi(openid, params.sumPrice)
+    console.log(r3)
+    let r4 = await this.payment(r3)
+    console.log(r4)
+    let data={...params, uid:openid,}
+     return await new Promise((resolve, reject) => {
+      Taro.request({
+        method: 'post',
+        url: urls.URL_SAVE_SP_GOODS,
+        data:  data ,
+        success: res => {
+          console.log(res);
+          resolve(res),
+          Taro.showToast({ title: '支付成功', icon: 'success', mask: true }),
+          Taro.navigateTo({ url: `/pages/info_ret/index` })
+        },
+        fail: err => {
+          reject(err)
+          console.log(err);
+          Taro.showToast({ title: '支付数据保存失败', icon: 'none', mask: true })
+        }
       })
-    }
+    })
+  }
 
 
   // 用微信帐号登录并保存到缓存

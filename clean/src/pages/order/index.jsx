@@ -40,15 +40,6 @@ class Index extends Component {
     this.doTimerAdv()
     this.doTimerCot()
     Taro.hideLoading()
-
-    // Taro.request({
-    //   url: "https://qmca.xyz/aaa",
-    //   method: 'get',
-    //   success: function(res){
-    //     console.log(res.data.img)
-    //    that.setState({image:res.img})
-    //   }
-    // })
   }
 
   componentWillUnmount() {

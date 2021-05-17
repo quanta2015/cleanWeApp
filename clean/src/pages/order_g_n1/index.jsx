@@ -43,6 +43,11 @@ class Index extends Component {
   }
 
   doNext =()=>{
+    let { mainStore } = this.props.store
+    mainStore.setName(this.state.name)
+    mainStore.setPhone(this.state.phone)
+    mainStore.setAddr(this.state.addr)
+    mainStore.setSelDate(this.state.dateSel)
     Taro.navigateTo({ url: `/pages/order_g_n2/index?type=${this.state.type}` })
   }
 

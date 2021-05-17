@@ -8,11 +8,8 @@ const cors = require('cors')
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const createError = require('http-errors')
-
 const router = require('./router/index')
-
 const app = express()
-const port = 443
 
 app.use(compression())
 app.use(cors())
@@ -46,11 +43,12 @@ var options = {
   cert:fs.readFileSync('./key/qmca.xyz.pem')
 }
 
-var servers = https.createServer(options,app).listen(443)
-servers.on('error', onError)
-servers.on('listening', onListening)
+// var servers = https.createServer(options,app).listen(443)
+// servers.on('error', onError)
+// servers.on('listening', onListening)
 
 
+var server = http.createServer(options,app).listen(80)
 
 
 
