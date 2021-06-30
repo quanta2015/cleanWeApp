@@ -27,7 +27,7 @@ class User extends Component {
   }
 
   onShareAppMessage (res) {
-    return { title: '艾尔森除醛', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
+    return { title: '艾尔森进化', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
   }
   onShareTimeline () {
     return {}
@@ -106,7 +106,7 @@ class User extends Component {
             <View className="m-icon">
               <Image src={icon_we}></Image>
             </View>
-            <Text className="m-txt">分享除醛</Text>
+            <Text className="m-txt">分享好友</Text>
             <View className="m-arrow">
               <Image src={icon_arrow}></Image>
             </View>

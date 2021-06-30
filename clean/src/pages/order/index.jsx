@@ -27,7 +27,7 @@ class Index extends Component {
   }
 
   onShareAppMessage (res) {
-    return { title: '艾尔森除醛', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
+    return { title: '艾尔森净化', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
   }
   onShareTimeline () {
     return {}
@@ -134,8 +134,8 @@ class Index extends Component {
             <Text className="m-res">治理</Text>
           </View>  
         </View>
-        <View className="m-info">中科院博士团队打造除醛产品每平米价格低于<Text className="fn-red">15</Text>元</View>
-        <View className="m-info">溯源除醛，七天入住，十年质保</View>
+        <View className="m-info">中科院博士生团队匠心打造治理产品，每平米价格低于<Text className="fn-red">15</Text>元</View>
+        <View className="m-info">溯源治理，无效退款，十年质保</View>
         <View className="m-ft">
           <View className="m-ft-info">已有 <Text className="m-c">{this.state.count}</Text> 位预约了服务</View>
           <View className="m-ft-info">服务热线: <Text className="m-p">4000-253-123</Text></View>

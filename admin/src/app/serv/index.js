@@ -27,6 +27,7 @@ class Serv extends React.Component {
       key: '',
       from:null,
       to:null,
+      datekey:null,
     }
   }
 
@@ -42,16 +43,25 @@ class Serv extends React.Component {
     }
   }
 
+  doSearch =async()=>{
+    let params = { key:this.state.key, from:this.state.from||'', to:this.state.to||'' }
+    this.setState({ loading: true, cur:1 })
+    let r = await this.props.mainStore.listOrderQuery(params)
+    this.setState({loading: false, list: r.data, listpage:getListByPage(r.data,1) })
+  }
+
   exportExcel = async() => {
+    let params = { key:this.state.key, from:this.state.from||'', to:this.state.to||'' }
     this.setState({ loading: true })
-    let r = await this.props.mainStore.listOrderAllToExcel()
+    let r = await this.props.mainStore.listOrderAllToExcel(params)
     window.open(`${API_SERVER}/${r.xls}`)
     this.setState({loading: false})
   }
 
   exportPdf = async() => {
+    let params = { key:this.state.key, from:this.state.from||'', to:this.state.to||'' }
     this.setState({ loading: true })
-    let r = await this.props.mainStore.listOrderAllToPdf()
+    let r = await this.props.mainStore.listOrderAllToPdf(params)
     window.open(`${API_SERVER}/${r.pdf}`)
     this.setState({loading: false})
   }
@@ -59,7 +69,15 @@ class Serv extends React.Component {
   doReset = async()=>{
     this.setState({ loading: true })
     let r = await this.props.mainStore.listOrderAll()
-    this.setState({loading: false, list: r.data, listpage:getListByPage(r.data,1) })
+    this.setState({
+      loading: false, 
+      from:null,
+      to:null,
+      key:'',
+      datekey:new Date(), 
+      list: r.data, 
+      listpage:getListByPage(r.data,1) 
+    })
   }
 
   doPage=(page)=>{
@@ -74,16 +92,7 @@ class Serv extends React.Component {
     this.setState({from:dateStrings[0], to:dateStrings[1] })
   }
 
-  doSearch =async()=>{
-    let params = {
-      key:  this.state.key,
-      from: this.state.from||'',
-      to:   this.state.to||'',
-    }
-    this.setState({ loading: true, cur:1 })
-    let r = await this.props.mainStore.listOrderQuery(params)
-    this.setState({loading: false, list: r.data, listpage:getListByPage(r.data,1) })
-  }
+  
 
   render() {
     let {list,listpage} = this.state
@@ -94,7 +103,10 @@ class Serv extends React.Component {
             <span>服务记录</span>
           </div>
           <div className="m-menu">
-            <RangePicker className="m-daterage" onChange={this.doSelDate}  ranges={{
+            <RangePicker className="m-daterage" 
+              key={this.state.datekey}
+              onChange={this.doSelDate}  
+              ranges={{
               '昨天': [moment().subtract(1,'day'), moment().subtract(1,'day')],
               '今天': [moment(), moment()], 
               '上个月': [moment().subtract(1,'months').startOf('month'), moment().subtract(1,'months').endOf('month')], 
@@ -103,7 +115,15 @@ class Serv extends React.Component {
               '今年': [moment().startOf('year'), moment()]
             }}/>
 
-            <Search className="m-search" placeholder="请输入客户名称" enterButton="查询" allowClear onSearch={this.doSearch} onChange={this.doInput} style={{flex:1}}/>
+            <Search className="m-search" 
+                    style={{flex:1}}
+                    enterButton="查询" 
+                    placeholder="请输入客户名称" 
+                    value={this.state.key} 
+                    allowClear 
+                    onSearch={this.doSearch} 
+                    onChange={this.doInput} 
+            />
             
             <div className="m-btn m-btn-ret" onClick={this.doReset}>
               <img src={icon_expo} />
@@ -143,7 +163,7 @@ class Serv extends React.Component {
                 <div className="m-area">{item.area.replace('平方米','㎡')}</div>
                 <div className="m-adv">{item.seltech}</div>
                 <div className="m-safe">{item.selsafe}</div>
-                <div className="m-money">{item.money}</div>
+                <div className="m-money">￥ {item.money}</div>
               </div>  
               )}
           </div>

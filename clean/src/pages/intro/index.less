@@ -161,4 +161,61 @@
       }
     }
   }
+
+  .m-cont {
+    display: flex;
+    flex-direction: column;
+    background: #343a40;
+    border-top: 1rpx solid #999;
+    padding: 40rpx 40rpx 20rpx 40rpx;
+    
+
+    .m-logo-w {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      image {
+        width: 100rpx;
+        height: 80rpx;
+      }
+    }
+
+    .m-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40rpx 0 0 0;
+      flex: 1;
+    
+      .m-tel,.m-addr {
+        width: 70%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18rpx;
+        color: #eee;
+        margin-bottom: 5rpx;
+        letter-spacing: 1px;
+
+        .m-tl {
+          width: 150rpx;
+          text-align: right;
+        }
+        .m-ct {
+          flex: 1;
+        }
+      }
+      .m-cr {
+        width: 70%;
+        display: flex;
+        color: #eee;
+        font-size: 16rpx;
+        justify-content: center;
+        align-items: center;
+        margin-top: 16rpx;
+      }
+    }
+
+  }
 }

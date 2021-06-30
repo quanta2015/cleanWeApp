@@ -22,7 +22,7 @@ class Shop extends Component {
   }
 
   onShareAppMessage (res) {
-    return { title: '艾尔森除醛', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
+    return { title: '艾尔森净化', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
   }
   onShareTimeline () {
     return {}
@@ -40,6 +40,7 @@ class Shop extends Component {
   }
   
   handleClick(id) {
+    console.log(id)
     Taro.navigateTo({
       url: `/pages/shop_sp/index?id=${id}`
     })

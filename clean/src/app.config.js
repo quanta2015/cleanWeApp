@@ -4,12 +4,13 @@ export default {
     
     'pages/order/index',
     'pages/case/index',
-    'pages/intro/index',
+    
     'pages/order_g/index',
     'pages/order_e/index',
     'pages/order_g_n1/index',
     'pages/order_g_n2/index',
     'pages/info_ret/index',
+    'pages/intro/index',
     
     'pages/shop/index',
     'pages/shop_sp/index',
@@ -21,6 +22,7 @@ export default {
     'pages/his_order/index',
     'pages/his_shopping/index',
     'pages/code/index',
+    
     
   ],
   tabBar: {
@@ -58,7 +60,7 @@ export default {
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#333',
-    navigationBarTitleText: '艾尔森除醛',
+    navigationBarTitleText: '艾尔森净化',
     navigationBarTextStyle: 'white'
   }
 }

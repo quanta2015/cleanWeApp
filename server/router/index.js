@@ -11,6 +11,8 @@ var router = express.Router()
 var tmplOrder   = require("../utils/tmplOrder")
 var tmplOrderHead   = require("../utils/tmplOrderHead")
 var tmplShopping= require("../utils/tmplShopping")
+var tmplShoppingHead   = require("../utils/tmplShoppingHead")
+
 var d  = require("../data/data")
 var db = require("../db/db")
 var wxpay  = require('../utils/wepay')
@@ -292,9 +294,10 @@ router.post('/listOrderQry', async function (req, res) {
 })
 
 
-router.get('/listOrderAlltoPdf', async function (req, res) {
-  let sql  = `CALL PROC_CL_LIST_ORDER_ALL()`
-  let r = await callP(sql, null, res)
+router.post('/listOrderAlltoPdf', async function (req, res) {
+  let params = req.body
+  let sql  = `CALL PROC_CL_LIST_ORDER_QUERY(?)`
+  let r = await callP(sql, params, res)
   tmplOrder.content[2].table.body = []
   tmplOrder.content[2].table.body.push(tmplOrderHead)
   r.map((item,i)=>{
@@ -320,9 +323,10 @@ router.get('/listOrderAlltoPdf', async function (req, res) {
 })
 
 
-router.get('/listOrderAllToXls', async function (req, res) {
-  let sql  = `CALL PROC_CL_LIST_ORDER_ALL()`
-  let r = await callP(sql, null, res)
+router.post('/listOrderAllToXls', async function (req, res) {
+  let params = req.body
+  let sql  = `CALL PROC_CL_LIST_ORDER_QUERY(?)`
+  let r = await callP(sql, params, res)
 
   let filePath = `export/order_${dayjs().format('YYYYMMDDhhmmssSSS')}.xls`
   var writeStream = fs.createWriteStream(filePath)
@@ -407,17 +411,23 @@ router.post('/listShoppingGoodsAll', async function (req, res) {
   res.status(200).json({ code: 200, data: r})
 })
 
-
-router.get('/listShoppingGoodsAlltoPdf', async function (req, res) {
-  let tmpl = clone(tmplShopping)
-  let sql1  = `CALL PROC_CL_LIST_SP_GOODS_ALL()`
+var listShoppingGoodsAllToQry = async(params,res) => {
+  let sql1  = `CALL PROC_CL_LIST_SP_GOODS_QUERY(?)`
   let sql2  = `CALL PROC_CL_LIST_GOODS(?)`
-  let r = await callP(sql1, null, res)
-  let q = await callP(sql2, {}, res)  
-  q.map((item,i,arr)=>{ arr[i]= {na:item.name,pr:parseFloat(item.price).toFixed(2)} })
+  let r = await callP(sql1, params, res)
+  let q = await callP(sql2, {}, res)
+  q.map((item,i,arr)=>{ arr[i]= {na:item.name,pr:item.price} })
   r.forEach((item,i,arr)=>{ arr[i].buyList = toListN(item.buyList,q) })
-  
-  r.map((item,i)=>{
+  return r
+}
+
+router.post('/listShoppingGoodsAllToQry',  async (req, res) => {
+  let r = await listShoppingGoodsAllToQry(req.body,res)
+  res.status(200).json({ code: 200, data: r})
+})
+
+var handleData = (ret, cb) => {
+  ret.map((item,i)=>{
     let row = []
     row.push(i+1)
     row.push(item.date   )
@@ -425,7 +435,7 @@ router.get('/listShoppingGoodsAlltoPdf', async function (req, res) {
     row.push(item.phone  )
     row.push(item.addr   )
     row.push(parseFloat(item.sumPrice).toFixed(2))
-    tmpl.content[2].table.body.push(row)
+    cb(row)
 
     item.buyList.map((o,j)=>{
       let srow = []
@@ -435,11 +445,17 @@ router.get('/listShoppingGoodsAlltoPdf', async function (req, res) {
       srow.push(o.na)
       srow.push(o.ct)
       srow.push(o.pr)
-      tmpl.content[2].table.body.push(srow)
+      cb(srow)
     })
   })
+}
 
-  let pdfDoc = printer.createPdfKitDocument(tmpl);
+router.post('/listShoppingGoodsAlltoPdf', async (req, res) => {
+  let r = await listShoppingGoodsAllToQry(req.body,res)
+  tmplShopping.content[2].table.body = []
+  tmplShopping.content[2].table.body.push(tmplShoppingHead)
+  handleData(r, (e)=>{ tmplShopping.content[2].table.body.push(e) })
+  let pdfDoc = printer.createPdfKitDocument(tmplShopping);
   let pdfPath = `export/shopping_${dayjs().format('YYYYMMDDhhmmssSSS')}.pdf`
   pdfDoc.pipe(fs.createWriteStream(pdfPath));
   pdfDoc.end();
@@ -447,42 +463,12 @@ router.get('/listShoppingGoodsAlltoPdf', async function (req, res) {
 })
 
 
-router.get('/listShoppingGoodsAllToXls', async function (req, res) {
-  let sql1  = `CALL PROC_CL_LIST_SP_GOODS_ALL()`
-  let sql2  = `CALL PROC_CL_LIST_GOODS(?)`
-  let r = await callP(sql1, null, res)
-  let q = await callP(sql2, {}, res)  
-  q.map((item,i,arr)=>{ arr[i]= {na:item.name,pr:parseFloat(item.price).toFixed(2)} })
-  r.forEach((item,i,arr)=>{ arr[i].buyList = toListN(item.buyList,q) })
-
+router.post('/listShoppingGoodsAllToXls', async (req, res) => {
   let filePath = `export/shopping_${dayjs().format('YYYYMMDDhhmmssSSS')}.xls`
+  let r = await listShoppingGoodsAllToQry(req.body,res)
   var writeStream = fs.createWriteStream(filePath)
-
-  var header=`${['序号','购买日期','客户名称','联系方式','地址','总金额'].join('\t')}\n`
-  writeStream.write(header)
-  r.map((item,i)=>{
-    let row = []
-    row.push(item.oid)
-    row.push(item.date   )
-    row.push(item.name   )
-    row.push(item.phone  )
-    row.push(item.addr   )
-    row.push(parseFloat(item.sumPrice).toFixed(2))
-    row = `${row.join('\t')}\n`
-    writeStream.write(row)
-
-    item.buyList.map((o,j)=>{
-      let srow = []
-      srow.push('        ')
-      srow.push('        ')
-      srow.push(j+1)
-      srow.push(o.na)
-      srow.push(o.ct)
-      srow.push(o.pr)
-      srow = `${srow.join('\t')}\n`
-      writeStream.write(srow)
-    })
-  })
+  writeStream.write(`${['序号','购买日期','客户名称','联系方式','地址','总金额'].join('\t')}\n`)
+  handleData(r, (e)=>{ writeStream.write(`${e.join('\t')}\n`) })
   writeStream.close()
   res.status(200).json({ code: 200, xls: filePath})
 })

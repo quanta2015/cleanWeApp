@@ -56,12 +56,12 @@ class Main extends BaseActions {
 
   @action
   async listOrderAllToPdf(params) {
-    return await this.get(urls.API_ORDER_LIST_PDF,params)
+    return await this.post(urls.API_ORDER_LIST_PDF,params)
   }
 
   @action
   async listOrderAllToExcel(params) {
-    return await this.get(urls.API_ORDER_LIST_XLS,params)
+    return await this.post(urls.API_ORDER_LIST_XLS,params)
   }
 
   @action
@@ -70,16 +70,19 @@ class Main extends BaseActions {
   }
 
   @action
+  async listSpGoodsQuery(params) {
+    return await this.post(urls.API_SP_GOODS_LIST_QRY,params)
+  }
+
+  @action
   async listSPGoodsAllToPdf(params) {
-    return await this.get(urls.API_SP_GOODS_LIST_PDF,params)
+    return await this.post(urls.API_SP_GOODS_LIST_PDF,params)
   }
 
   @action
   async listSPGoodsAllToExcel(params) {
-    return await this.get(urls.API_SP_GOODS_LIST_XLS,params)
+    return await this.post(urls.API_SP_GOODS_LIST_XLS,params)
   }
-
-
 
   @action
   async login(params) {

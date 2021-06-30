@@ -101,7 +101,7 @@ class Good extends React.Component {
       let file = e.target.files[0]
       let blob = await fileToBlob(file,400,300)
       let formData = new FormData()
-      formData.append('file', blob, 'case')
+      formData.append('file', blob, 'goods')
 
       this.setState({ loading: true })
       let r = await this.props.mainStore.upload(formData)

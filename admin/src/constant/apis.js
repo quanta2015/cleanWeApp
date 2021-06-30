@@ -18,6 +18,7 @@ export const API_ORDER_LIST_XLS = API_SERVER + '/listOrderAllToXls'
 export const API_SP_GOODS_LIST_ALL = API_SERVER + '/listShoppingGoodsAll'
 export const API_SP_GOODS_LIST_PDF = API_SERVER + '/listShoppingGoodsAlltoPdf'
 export const API_SP_GOODS_LIST_XLS = API_SERVER + '/listShoppingGoodsAllToXls'
+export const API_SP_GOODS_LIST_QRY = API_SERVER + '/listShoppingGoodsAllToQry'
 
 
 

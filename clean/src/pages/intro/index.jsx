@@ -3,14 +3,14 @@ import { View, Text ,Image } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
 import './index.less'
 import {API_SERVER} from '../../constant/apis'
-
+import logo from '../../static/icon_logo_w.png'
 
 @inject('store')
 @observer
 class Intro extends Component {
 
   onShareAppMessage (res) {
-    return { title: '艾尔森除醛', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
+    return { title: '艾尔森净化', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
   }
   onShareTimeline () {
     return {}
@@ -33,8 +33,8 @@ class Intro extends Component {
           </View>
           
           <View className="m-intro">
-            <Text className="m-p">浙江艾尔森环保科技有限公司由中科院博士生团队支持创办，采用国际专利技术，主要研发和生产垃圾处理设备、甲醛治理液、异味清除剂、新风系统设备及含酶净化网等空气净化灭菌产品，是一家集研发设计、生产销售服务一体化专业环保公司。</Text>
-            <Text className="m-p">艾尔森拥有空气净化方面的多项自主知识产权产品，而且属于浙江省室内环境净化行业协会会长单位、国家级二青会室内环境治理技术委员单位、浙江省科技型企业、2020被评为突出贡献单位，已通过ISO9001管理体系认证。</Text>
+            <Text className="m-p">浙江艾尔森环保科技有限公司由中科院博士生团队支持创办，主要致力于家政保洁清除空气净化治理、室内空气检测等销售服务。</Text>
+            <Text className="m-p">公司拥有多项自主知识产权空气净化产品，系浙江省室内环境净化行业协会会长单位、室内环境污染治理甲级资质单位、G20杭州峰会空气净化服务商、国家级二青会室内环境治理技术委员单位、浙江省科技型企业、2020被评为“突出贡献单位”，已通过“ISO9001”管理体系认证。</Text>
             <Text className="m-p">2019年艾尔森携手世界500强企业霍尼韦尔在杭州成立浙江营销中心，共享核心技术。2020年初，新冠肺炎疫情期间累计向杭城捐赠百吨消毒物资，为杭城各区多所中小学校进行了公益消毒灭菌服务，受到了各区教育局的嘉奖及表扬。我们重新定义美好生活，致力于给用户提供健康环保的产品，改善空气环境、提高生活质量，用呼吸、传递爱！</Text>
           </View> 
         </View>
@@ -101,10 +101,29 @@ class Intro extends Component {
           </View>
           <View className="m-mark">
             <Image src={`${API_SERVER}/cdn/intro_04.png`}></Image>
-            <Text className="m-t">实力除醛品牌</Text>
+            <Text className="m-t">双甲级资质</Text>
             <Text className="m-c">实力看的见</Text>
           </View>
         </View> 
+
+        <View className="m-cont">
+          <View className="m-logo-w">
+            <Image src={logo}></Image>
+          </View>
+          <View className="m-info">
+            <View className="m-tel">
+              <Text className="m-tl">服务热线：</Text>
+              <Text className="m-ct">4000-253-123</Text>
+            </View>
+            <View className="m-addr">
+              <Text className="m-tl">公司地址：</Text>
+              <Text className="m-ct">浙江杭州市下城区沈家路150号2幢</Text>
+            </View>
+            <View className="m-cr">
+              <Text>Copyright ©2021 zjairsen.com</Text>
+            </View>
+          </View>
+        </View>
         
       </View>
     )

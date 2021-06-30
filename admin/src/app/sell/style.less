@@ -8,27 +8,27 @@
 
 
     &>.m-tl {
-      position: absolute;
-      font-size: 12px;
-      text-align: center;
-      right: 20px;
-      
-      span {
-        display: inline-block;
-        padding: 2px 20px;
-        border: 1px solid #ccc;
-        border-top: none;
-        border-radius: 0 0 5px 5px;
-        background: #333;
-        color: #fff;
-      }
+      display: flex;
+      font-size: 14px;
+      background: #0e8bb5;
+      padding: 5px 20px;
+      color: #fff;
     }
+      
 
     .m-menu {
       background: #eee;
       display: flex;
-      padding: 10px;
+      padding: 20px 10px;
       border-bottom: 1px solid #dfdfdf;
+
+      .m-daterage {
+        width: 280px;
+        margin-right: 10px;
+      }
+      .m-search {
+        margin-right: 10px;
+      }
 
       .m-btn {
         background: #336699;
@@ -62,6 +62,9 @@
           &:first-child {
             background:#666;
             color: #fff;
+            &>.m-price {
+              color: #fff;
+            }
           }
 
           &>div {

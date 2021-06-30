@@ -85,7 +85,7 @@ class Index extends Component {
           </View>
           <View className="m-row m-row-c">
             <Text className="m-info">
-              说明：预约甲醛检测治理至少须提前一天
+              说明：预约空气检测治理至少须提前一天
             </Text>
             <Text className="m-info">
               服务热线：4000-253-123

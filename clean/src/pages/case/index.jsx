@@ -16,7 +16,7 @@ class Case extends Component {
   }
 
   onShareAppMessage (res) {
-    return { title: '艾尔森除醛', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
+    return { title: '艾尔森净化', imageUrl:`${urls.API_SERVER}/cdn/welogos.png`,path: '/pages/order/index' }
   }
   onShareTimeline () {
     return {}
@@ -28,8 +28,8 @@ class Case extends Component {
     return (
       <View className='g-case'>
         <View className="m-title">
-          <Text className="m-li">艾尔森环保</Text>
-          <Text className="m-li">专业除醛品牌</Text>
+          <Text className="m-li">艾尔森</Text>
+          <Text className="m-li">专业空气治理品牌</Text>
           <Text className="m-li">百万家庭的共同选择</Text>
         </View> 
         <View className="m-tl">艾尔森服务案例</View>

@@ -21,13 +21,13 @@ class Shop_sp extends Component {
       isCart: false,
       data:
       {
-        id: 2,
-        img: 'http://lc-zJqDdcsx.cn-e1.lcfile.com/1854d11cec1b763115ea.jpg',
-        img2: 'http://lc-zJqDdcsx.cn-e1.lcfile.com/3e7494d00f825828a155.png',
+        id: 1,
+        img: '',
+        img2: '',
         title: '除味净',
         des: '500ml/瓶',
         price: '158',
-        detail: 'http://lc-zJqDdcsx.cn-e1.lcfile.com/dc7bd8839f55ff1c59c6.jpg'
+        detail: ''
       },
     }
   }
@@ -39,12 +39,17 @@ class Shop_sp extends Component {
   }
   
   async getGoodsInfo() {
-    const id = getCurrentInstance().router.params.id
 
+    const id = getCurrentInstance().router.params.id
     Taro.showLoading({ title:'loading', mask:true })
     const r = await req.post(urls.URL_LIST_GOODS)
-    console.log(id,r.data.data)
-    this.setState({ data: r.data.data[id-1]})
+    let data
+    r.data.data.map((item,i)=>{
+      if (item.id === parseInt(id)) {
+        data = JSON.parse(JSON.stringify(item))
+      }
+    })
+    this.setState({ data: data})
     Taro.hideLoading()
   }
   
@@ -91,15 +96,11 @@ class Shop_sp extends Component {
 
   render() {
 
-    // const height = Taro.getSystemInfoSync().windowHeight
-    const { id, img_h1, img_h2,img_bd, name, spec, price, unit } = this.state.data
+    const { img_h1, img_h2,img_bd, name, spec, price, unit } = this.state.data
     const { shopStore: { cartList,sumCount } } = this.props.store
     return (
       <View className='goods'>
-        <ScrollView
-          scrollY
-        // style={{ height }}
-        >
+        <ScrollView scrollY >
           {/* <!-- 轮播图 --> */}
           <Swiper
             className='goods-swiper'
